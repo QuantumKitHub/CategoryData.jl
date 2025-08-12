@@ -3,16 +3,18 @@
 
 function subscript(i::Integer)
     return i < 0 ? error("$i is negative") :
-           string(Iterators.reverse('₀' + d for d in digits(i))...)
+        string(Iterators.reverse('₀' + d for d in digits(i))...)
 end
 function superscript(i::Integer)
     if i < 0
         throw(ArgumentError("$i is negative"))
     else
         # for some reason superscript two and three are not in the logical spots of the table
-        return string(map(Iterators.reverse(digits(i))) do x
-                          return x == 2 ? '²' : x == 3 ? '³' : '⁰' + x
-                      end...)
+        return string(
+            map(Iterators.reverse(digits(i))) do x
+                return x == 2 ? '²' : x == 3 ? '³' : '⁰' + x
+            end...
+        )
     end
 end
 
@@ -78,7 +80,7 @@ end
 # Show and friends
 # ----------------
 
-function TensorKitSectors.type_repr(::Type{Object{F}}) where {F<:FusionRing}
+function TensorKitSectors.type_repr(::Type{Object{F}}) where {F <: FusionRing}
     return "Object{$(TensorKitSectors.type_repr(F))}"
 end
 
