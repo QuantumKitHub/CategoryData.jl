@@ -7,7 +7,7 @@ function list_fusionrings()
         m = match(r"FR_(?<R>\d+)_(?<M>\d+)_(?<N>\d+)_(?<I>\d+).txt", file)
         if !isnothing(m)
             R, M, N, I = parse.(Int, (m[:R], m[:M], m[:N], m[:I]))
-            push!(rings, FR{R, M, N, I})
+            push!(rings, FR{R,M,N,I})
         else
             try
                 push!(rings, eval(Meta.parse(splitext(file)[1])))
@@ -26,7 +26,7 @@ function list_fusioncategories()
         m = match(r"FR_(?<R>\d+)_(?<M>\d+)_(?<N>\d+)_(?<I>\d+)_(?<D>\d+).txt", file)
         if !isnothing(m)
             R, M, N, I, D = parse.(Int, (m[:R], m[:M], m[:N], m[:I], m[:D]))
-            push!(categories, UFC{R, M, N, I, D})
+            push!(categories, UFC{R,M,N,I,D})
         else
             try
                 push!(categories, eval(Meta.parse(splitext(file)[1])))
@@ -42,12 +42,11 @@ function list_braidedcategories()
     foldername = joinpath(artifact_path, "Rsymbols")
     categories = Vector{Type{<:BraidedCategory}}()
     for file in readdir(foldername)
-        m = match(
-            r"FR_(?<R>\d+)_(?<M>\d+)_(?<N>\d+)_(?<I>\d+)_(?<D1>\d+)_(?<D2>\d+).txt", file
-        )
+        m = match(r"FR_(?<R>\d+)_(?<M>\d+)_(?<N>\d+)_(?<I>\d+)_(?<D1>\d+)_(?<D2>\d+).txt",
+                  file)
         if !isnothing(m)
             R, M, N, I, D₁, D₂ = parse.(Int, (m[:R], m[:M], m[:N], m[:I], m[:D1], m[:D2]))
-            push!(categories, PMFC{R, M, N, I, D₁, D₂})
+            push!(categories, PMFC{R,M,N,I,D₁,D₂})
         else
             try
                 push!(categories, eval(Meta.parse(splitext(file)[1])))
@@ -62,11 +61,9 @@ end
 # Nsymbols
 # --------
 
-function N_artifact(::Type{F}) where {F <: Union{FR, UFC, PMFC}}
-    return joinpath(
-        artifact_path, "Nsymbols",
-        "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F)).txt"
-    )
+function N_artifact(::Type{F}) where {F<:Union{FR,UFC,PMFC}}
+    return joinpath(artifact_path, "Nsymbols",
+                    "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F)).txt")
 end
 
 const N_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<N>\d+)"
@@ -83,7 +80,7 @@ function parse_Nsymbol(line)
     return a, b, c, N
 end
 
-function extract_Nsymbol(::Type{F}) where {F <: FusionRing}
+function extract_Nsymbol(::Type{F}) where {F<:FusionRing}
     R = rank(F)
     filename = N_artifact(F)
     isfile(filename) || throw(LoadError(filename, 0, "Nsymbol file not found for $F"))
@@ -95,9 +92,8 @@ function extract_Nsymbol(::Type{F}) where {F <: FusionRing}
     return N_array
 end
 
-@generated function TensorKitSectors.Nsymbol(
-        a::Object{F}, b::Object{F}, c::Object{F}
-    ) where {F <: FusionRing}
+@generated function TensorKitSectors.Nsymbol(a::Object{F}, b::Object{F},
+                                             c::Object{F}) where {F<:FusionRing}
     local N_array
     try
         N_array = extract_Nsymbol(F)
@@ -114,11 +110,9 @@ end
 # Fsymbols
 # --------
 
-function F_artifact(::Type{F}) where {F <: Union{UFC, PMFC}}
-    return joinpath(
-        artifact_path, "Fsymbols",
-        "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F)).txt"
-    )
+function F_artifact(::Type{F}) where {F<:Union{UFC,PMFC}}
+    return joinpath(artifact_path, "Fsymbols",
+                    "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F)).txt")
 end
 
 const F_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<α>\d+) (?<e>\d+) (?<β>\d+) (?<μ>\d+) (?<f>\d+) (?<ν>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
@@ -127,9 +121,9 @@ function parse_Fsymbol(line)
     m = match(F_format, line)
     local labels, val
     try
-        labels = parse.(
-            Int, (m[:a], m[:b], m[:c], m[:d], m[:α], m[:e], m[:β], m[:μ], m[:f], m[:ν])
-        )
+        labels = parse.(Int,
+                        (m[:a], m[:b], m[:c], m[:d], m[:α], m[:e], m[:β], m[:μ], m[:f],
+                         m[:ν]))
         val = complex(parse.(Float64, (m[:re], m[:im]))...)
     catch
         throw(Meta.ParseError("invalid F pattern: $m"))
@@ -137,7 +131,7 @@ function parse_Fsymbol(line)
     return labels..., val
 end
 
-function extract_Fsymbol(::Type{F}) where {F <: FusionCategory}
+function extract_Fsymbol(::Type{F}) where {F<:FusionCategory}
     R = rank(F)
     M = multiplicity(F)
     filename = F_artifact(F)
@@ -152,7 +146,7 @@ function extract_Fsymbol(::Type{F}) where {F <: FusionCategory}
         end
         return isreal(F_array) ? convert(SparseArray{Float64}, F_array) : F_array
     else
-        F_dict = Dict{Tuple{Int, Int, Int, Int, Int, Int}, SparseArray{ComplexF64, 4}}()
+        F_dict = Dict{Tuple{Int,Int,Int,Int,Int,Int},SparseArray{ComplexF64,4}}()
         for line in eachline(filename)
             a, b, c, d, α, e, β, μ, f, ν, val = parse_Fsymbol(line)
             if !Base.haskey(F_dict, (a, b, c, d, e, f))
@@ -164,21 +158,20 @@ function extract_Fsymbol(::Type{F}) where {F <: FusionCategory}
     end
 end
 
-function generate_Farray(
-        ::Type{F}, a::Int, b::Int, c::Int, d::Int, e::Int, f::Int
-    ) where {F <: FusionCategory}
-    a, b, c, d, e, f = Object{F}(a), Object{F}(b), Object{F}(c), Object{F}(d), Object{F}(e), Object{F}(f)
+function generate_Farray(::Type{F}, a::Int, b::Int, c::Int, d::Int, e::Int,
+                         f::Int) where {F<:FusionCategory}
+    a, b, c, d, e, f = Object{F}(a), Object{F}(b), Object{F}(c), Object{F}(d),
+                       Object{F}(e), Object{F}(f)
     N1 = Nsymbol(a, b, e)
     N2 = Nsymbol(e, c, d)
     N3 = Nsymbol(b, c, f)
     N4 = Nsymbol(a, f, d)
-    return SparseArray{ComplexF64, 4}(undef, (N1, N2, N3, N4))
+    return SparseArray{ComplexF64,4}(undef, (N1, N2, N3, N4))
 end
 
-@generated function TensorKitSectors.Fsymbol(
-        a::Object{F}, b::Object{F}, c::Object{F},
-        d::Object{F}, e::Object{F}, f::Object{F}
-    ) where {F <: FusionCategory}
+@generated function TensorKitSectors.Fsymbol(a::Object{F}, b::Object{F}, c::Object{F},
+                                             d::Object{F}, e::Object{F},
+                                             f::Object{F}) where {F<:FusionCategory}
     local F_array
     try
         F_array = extract_Fsymbol(F)
@@ -199,7 +192,7 @@ end
             N4 = Nsymbol(a, f, d)
 
             (N1 == 0 || N2 == 0 || N3 == 0 || N4 == 0) &&
-                return SparseArray{ComplexF64, 4}(undef, (N1, N2, N3, N4))
+                return SparseArray{ComplexF64,4}(undef, (N1, N2, N3, N4))
 
             return $(F_array)[(a.id, b.id, c.id, d.id, e.id, f.id)]
         end
@@ -209,11 +202,9 @@ end
 # Rsymbols
 # --------
 
-function R_artifact(::Type{F}) where {F <: PMFC}
-    return joinpath(
-        artifact_path, "Rsymbols",
-        "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F))_$(braid_index(F)).txt"
-    )
+function R_artifact(::Type{F}) where {F<:PMFC}
+    return joinpath(artifact_path, "Rsymbols",
+                    "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F))_$(braid_index(F)).txt")
 end
 
 const R_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<μ>\d+) (?<ν>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
@@ -230,7 +221,7 @@ function parse_Rsymbol(line)
     return labels..., val
 end
 
-function extract_Rsymbol(::Type{F}) where {F <: BraidedCategory}
+function extract_Rsymbol(::Type{F}) where {F<:BraidedCategory}
     R = rank(F)
     filename = R_artifact(F)
     isfile(filename) || throw(LoadError(filename, 0, "Rsymbol file not found for $F"))
@@ -244,7 +235,7 @@ function extract_Rsymbol(::Type{F}) where {F <: BraidedCategory}
         end
         return isreal(R_array) ? convert(SparseArray{Float64}, R_array) : R_array
     else
-        R_dict = Dict{Tuple{Int, Int, Int}, SparseArray{ComplexF64, 2}}()
+        R_dict = Dict{Tuple{Int,Int,Int},SparseArray{ComplexF64,2}}()
         for line in eachline(filename)
             a, b, c, μ, ν, val = parse_Rsymbol(line)
             if !Base.haskey(R_dict, (a, b, c))
@@ -256,16 +247,15 @@ function extract_Rsymbol(::Type{F}) where {F <: BraidedCategory}
     end
 end
 
-function generate_Rarray(::Type{F}, a::Int, b::Int, c::Int) where {F <: BraidedCategory}
+function generate_Rarray(::Type{F}, a::Int, b::Int, c::Int) where {F<:BraidedCategory}
     a, b, c = Object{F}(a), Object{F}(b), Object{F}(c)
     N1 = Nsymbol(a, b, c)
     N2 = Nsymbol(b, a, c)
-    return SparseArray{ComplexF64, 2}(undef, (N1, N2))
+    return SparseArray{ComplexF64,2}(undef, (N1, N2))
 end
 
-@generated function TensorKitSectors.Rsymbol(
-        a::Object{F}, b::Object{F}, c::Object{F}
-    ) where {F <: BraidedCategory}
+@generated function TensorKitSectors.Rsymbol(a::Object{F}, b::Object{F},
+                                             c::Object{F}) where {F<:BraidedCategory}
     local R_array
     try
         R_array = extract_Rsymbol(F)
@@ -285,7 +275,7 @@ end
             N2 = Nsymbol(b, a, c)
 
             (N1 == 0 || N2 == 0) &&
-                return SparseArray{ComplexF64, 2}(undef, (N1, N2))
+                return SparseArray{ComplexF64,2}(undef, (N1, N2))
 
             return $(R_array)[(a.id, b.id, c.id)]
         end
@@ -297,11 +287,9 @@ end
 
 const fusionformat = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<m1>\d+) (?<m2>\d+) (?<m3>\d+) (?<μ>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
 
-function fusiontensor_artifact(::Type{F}) where {F <: PMFC}
-    return joinpath(
-        artifact_path, "fusiontensors",
-        "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F))_$(braid_index(F)).txt"
-    )
+function fusiontensor_artifact(::Type{F}) where {F<:PMFC}
+    return joinpath(artifact_path, "fusiontensors",
+                    "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F))_$(braid_index(F)).txt")
 end
 
 function parse_fusiontensor(line)
@@ -316,11 +304,11 @@ function parse_fusiontensor(line)
     return labels..., val
 end
 
-function extract_fusiontensor(::Type{F}) where {F <: BraidedCategory}
+function extract_fusiontensor(::Type{F}) where {F<:BraidedCategory}
     filename = fusiontensor_artifact(F)
     isfile(filename) || throw(LoadError(filename, 0, "fusiontensor file not found for $F"))
 
-    fusiontensor_dict = Dict{Tuple{Int, Int, Int}, SparseArray{ComplexF64, 4}}()
+    fusiontensor_dict = Dict{Tuple{Int,Int,Int},SparseArray{ComplexF64,4}}()
     for line in eachline(filename)
         a, b, c, m1, m2, m3, μ, val = parse_fusiontensor(line)
 
@@ -335,20 +323,18 @@ function extract_fusiontensor(::Type{F}) where {F <: BraidedCategory}
     return fusiontensor_dict
 end
 
-function generate_fusiontensor_array(
-        ::Type{F}, a::Int, b::Int, c::Int
-    ) where {F <: BraidedCategory}
+function generate_fusiontensor_array(::Type{F}, a::Int, b::Int,
+                                     c::Int) where {F<:BraidedCategory}
     a, b, c = Object{F}(a), Object{F}(b), Object{F}(c)
     da = dim(a)
     db = dim(b)
     dc = dim(c)
     N = Nsymbol(a, b, c)
-    return SparseArray{ComplexF64, 4}(undef, (da, db, dc, N))
+    return SparseArray{ComplexF64,4}(undef, (da, db, dc, N))
 end
 
-@generated function TensorKitSectors.fusiontensor(
-        a::Object{F}, b::Object{F}, c::Object{F}
-    ) where {F <: BraidedCategory}
+@generated function TensorKitSectors.fusiontensor(a::Object{F}, b::Object{F},
+                                                  c::Object{F}) where {F<:BraidedCategory}
     local Fdict
     try
         Fdict = extract_fusiontensor(F)
@@ -365,7 +351,7 @@ end
         db = dim(b)
         dc = dim(c)
         N = Nsymbol(a, b, c)
-        N == 0 && return SparseArray{ComplexF64, 4}(undef, (da, db, dc, N))
+        N == 0 && return SparseArray{ComplexF64,4}(undef, (da, db, dc, N))
         return $(Fdict)[(a.id, b.id, c.id)]
     end
 end

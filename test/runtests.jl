@@ -8,8 +8,8 @@ using TensorOperations: @tensor
 
 Random.seed!(1234)
 
-smallset(::Type{I}) where {I <: Object} = values(I)
-function randsector(::Type{I}) where {I <: Object}
+smallset(::Type{I}) where {I<:Object} = values(I)
+function randsector(::Type{I}) where {I<:Object}
     s = collect(smallset(I))
     a = rand(s)
     while a == one(a) # don't use trivial label
@@ -63,9 +63,9 @@ end
 @testset verbose = true "@objectnames" begin
     @testset "Working examples" begin
         global testcat, testcat2, testcat3
-        @objectnames testcat = FR{4, 1, 2, 2} A B C D
-        @objectnames testcat2 = UFC{5, 1, 2, 4, 0} α β γ δ ε
-        @objectnames testcat3 = PMFC{6, 1, 0, 4, 0, 7} a b c d e f
+        @objectnames testcat = FR{4,1,2,2} A B C D
+        @objectnames testcat2 = UFC{5,1,2,4,0} α β γ δ ε
+        @objectnames testcat3 = PMFC{6,1,0,4,0,7} a b c d e f
 
         @test Object{testcat}(:A) == one(Object{testcat})
         @test Object{testcat2}(:β) == Object{testcat2}(2)
@@ -74,7 +74,9 @@ end
 
     @testset "Erroring examples" begin
         error = "Number of names does not match number of objects"
-        @test_throws ArgumentError(error) @macroexpand @objectnames testcat = UFC{5, 1, 2, 4, 0} α β γ δ
-        @test_throws ArgumentError(error) @macroexpand @objectnames testcat2 = PMFC{6, 1, 0, 4, 0, 7} a b c d e f g
+        @test_throws ArgumentError(error) @macroexpand @objectnames testcat = UFC{5,1,2,4,
+                                                                                  0} α β γ δ
+        @test_throws ArgumentError(error) @macroexpand @objectnames testcat2 = PMFC{6,1,0,
+                                                                                    4,0,7} a b c d e f g
     end
 end

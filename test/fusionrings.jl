@@ -28,7 +28,7 @@
             if Base.IteratorSize(values(I)) == Base.IsInfinite() && I <: ProductSector
                 @test_throws ArgumentError values(I)[i]
                 @test_throws ArgumentError TensorKitSectors.findindex(values(I), s)
-            elseif hasmethod(Base.getindex, Tuple{typeof(values(I)), Int})
+            elseif hasmethod(Base.getindex, Tuple{typeof(values(I)),Int})
                 @test s == @constinferred (values(I)[i])
                 @test TensorKitSectors.findindex(values(I), s) == i
             end
@@ -38,10 +38,11 @@
         @test one(I) == first(values(I))
         if Base.IteratorSize(values(I)) == Base.IsInfinite() && I <: ProductSector
             @test_throws ArgumentError TensorKitSectors.findindex(values(I), one(I))
-        elseif hasmethod(Base.getindex, Tuple{typeof(values(I)), Int})
+        elseif hasmethod(Base.getindex, Tuple{typeof(values(I)),Int})
             @test (@constinferred TensorKitSectors.findindex(values(I), one(I))) == 1
             for s in smallset(I)
-                @test (@constinferred values(I)[TensorKitSectors.findindex(values(I), s)]) == s
+                @test (@constinferred values(I)[TensorKitSectors.findindex(values(I), s)]) ==
+                      s
             end
         end
     end

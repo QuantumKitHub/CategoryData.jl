@@ -18,7 +18,7 @@
 
     @testset "Sector $Istr: Hexagon equation" begin
         for a in smallset(I), b in smallset(I), c in smallset(I)
-            @test hexagon_equation(a, b, c; atol = 1.0e-12, rtol = 1.0e-12)
+            @test hexagon_equation(a, b, c; atol=1e-12, rtol=1e-12)
         end
     end
 
