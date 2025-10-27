@@ -31,7 +31,7 @@ using TensorKit, CategoryData
 𝒪 = Object{𝒞}
 @show collect(values(𝒪))                    # 1 -> I, 2 -> τ
 
-t = TensorMap(rand, ComplexF64, Vect[𝒪](1 => 2, 2 => 2) ← Vect[𝒪](1 =>2, 2 => 2))
+t = rand(ComplexF64, Vect[𝒪](1 => 2, 2 => 2) ← Vect[𝒪](1 =>2, 2 => 2))
 ```
 
 ## `@objectnames`
@@ -50,7 +50,7 @@ julia> ob(:τ)
 julia> Vect[ob](:I=>1,:τ=>2)
 Vect[Object{Fib}](:I=>1, :τ=>2)
  
-julia> TensorMap(rand, ComplexF64, Vect[ob](:I => 1, :τ => 2) ← Vect[ob](:I => 1, :τ => 2))
+julia> rand(ComplexF64, Vect[ob](:I => 1, :τ => 2) ← Vect[ob](:I => 1, :τ => 2))
 TensorMap(Vect[Object{Fib}](:I=>1, :τ=>2) ← Vect[Object{Fib}](:I=>1, :τ=>2)):
 * Data for fusiontree FusionTree{Object{Fib}}((:I,), :I, (false,), ()) ← FusionTree{Object{Fib}}((:I,), :I, (false,), ()):
  0.15222115844866924 + 0.32002944990015136im
