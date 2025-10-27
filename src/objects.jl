@@ -36,8 +36,8 @@ function TensorKitSectors.:⊗(a::I, b::I) where {I <: Object}
     return Iterators.filter(c -> Nsymbol(a, b, c) > 0, values(I))
 end
 
-Base.one(::Type{<:Object{F}}) where {F} = Object{F}(1)
-function Base.conj(a::Object{F}) where {F}
+TensorKitSectors.unit(::Type{<:Object{F}}) where {F} = Object{F}(1)
+function TensorKitSectors.dual(a::Object{F}) where {F}
     if selfduality(F) == 0
         return a
     else
