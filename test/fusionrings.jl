@@ -4,15 +4,15 @@
 
     @testset "Sector $Istr: Basic properties" begin
         s = (randsector(I), randsector(I), randsector(I))
-    @test Base.eval(Main, Meta.parse(sprint(show, I))) == I
-    @test Base.eval(Main, Meta.parse(TensorKitSectors.type_repr(I))) == I
-    @test Base.eval(Main, Meta.parse(sprint(show, s[1]))) == s[1]
-    @test @testinferred(hash(s[1])) == hash(deepcopy(s[1]))
-    @test @testinferred(unit(s[1])) == @testinferred(unit(I))
-    @testinferred dual(s[1])
-    @testinferred Nsymbol(s...)
-    @testinferred(s[1] ⊗ s[2])
-    @testinferred(⊗(s..., s...))
+        @test Base.eval(Main, Meta.parse(sprint(show, I))) == I
+        @test Base.eval(Main, Meta.parse(TensorKitSectors.type_repr(I))) == I
+        @test Base.eval(Main, Meta.parse(sprint(show, s[1]))) == s[1]
+        @test @testinferred(hash(s[1])) == hash(deepcopy(s[1]))
+        @test @testinferred(unit(s[1])) == @testinferred(unit(I))
+        @testinferred dual(s[1])
+        @testinferred Nsymbol(s...)
+        @testinferred(s[1] ⊗ s[2])
+        @testinferred(⊗(s..., s...))
     end
 
     @testset "Sector $Istr: Value iterator" begin
