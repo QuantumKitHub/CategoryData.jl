@@ -4,16 +4,81 @@
 
     @testset "Sector $Istr: Basic properties" begin
         s = (randsector(I), randsector(I), randsector(I))
-        @test eval(Meta.parse(sprint(show, I))) == I
-        @test eval(Meta.parse(TensorKitSectors.type_repr(I))) == I
-        @test eval(Meta.parse(sprint(show, s[1]))) == s[1]
-        @test @constinferred(hash(s[1])) == hash(deepcopy(s[1]))
-        @test @constinferred(one(s[1])) == @constinferred(one(I))
-        @constinferred dual(s[1])
-        @constinferred dim(s[1])
-        @constinferred frobeniusschur(s[1])
-        @constinferred Bsymbol(s...)
-        @constinferred Fsymbol(s..., s...)
+        @test Base.eval(Main, Meta.parse(sprint(show, I))) == I
+        @test Base.eval(Main, Meta.parse(TensorKitSectors.type_repr(I))) == I
+        @test Base.eval(Main, Meta.parse(sprint(show, s[1]))) == s[1]
+        @test @testinferred(hash(s[1])) == hash(deepcopy(s[1]))
+        @test @testinferred(unit(s[1])) == @testinferred(unit(I))
+        @testinferred dual(s[1])
+        @testinferred dim(s[1])
+        @testinferred frobenius_schur_phase(s[1])
+        @testinferred frobenius_schur_indicator(s[1])
+        @testinferred Nsymbol(s...)
+        @testinferred Asymbol(s...)
+        B = @testinferred Bsymbol(s...)
+        F = @testinferred Fsymbol(s..., s...)
+        @test eltype(F) === @testinferred fusionscalartype(I)
+        @testinferred(s[1] ⊗ s[2])
+        @testinferred(⊗(s..., s...))
+    end
+
+    @testset "Sector $Istr: Value iterator" begin
+        @test eltype(values(I)) == I
+        sprev = unit(I)
+        for (i, s) in enumerate(values(I))
+            @test !isless(s, sprev)
+            @test s == @testinferred(values(I)[i])
+            @test findindex(values(I), s) == i
+            sprev = s
+            i >= 10 && break
+        end
+        @test unit(I) == first(values(I))
+        @test length(allunits(I)) == 1
+        @test (@testinferred findindex(values(I), unit(I))) == 1
+        for s in smallset(I)
+            @test (@testinferred values(I)[findindex(values(I), s)]) == s
+        end
+    end
+
+    @testset "Sector $Istr: Fusion and dimensions" begin
+        for a in smallset(I), b in smallset(I)
+            da = dim(a)
+            db = dim(b)
+            dc = sum(c -> dim(c) * Nsymbol(a, b, c), a ⊗ b)
+            @test da * db ≈ dc # needs to be ≈ because of anyons
+        end
+    end
+
+    @testset "Sector $Istr: Fsymbol and Asymbol" begin
+        for a in smallset(I), b in smallset(I)
+            for c in ⊗(a, b)
+                A1 = Asymbol(a, b, c)
+                A2 = TKS.Asymbol_from_Fsymbol(a, b, c)
+                @test A1 ≈ A2 atol = 1.0e-12 rtol = 1.0e-12
+            end
+        end
+    end
+
+    @testset "Sector $Istr: Fsymbol and Bsymbol" begin
+        for a in smallset(I), b in smallset(I)
+            for c in ⊗(a, b)
+                B1 = Bsymbol(a, b, c)
+                B2 = TKS.Bsymbol_from_Fsymbol(a, b, c)
+                @test B1 ≈ B2 atol = 1.0e-12 rtol = 1.0e-12
+            end
+        end
+    end
+
+    @testset "Sector $Istr: Fsymbol and dim" begin
+        for a in smallset(I)
+            @test dim(a) ≈ TKS.dim_from_Fsymbol(a) atol = 1.0e-12 rtol = 1.0e-12
+        end
+    end
+
+    @testset "Sector $Istr: Fsymbol and frobenius_schur_phase" begin
+        for a in smallset(I)
+            @test frobenius_schur_phase(a) ≈ TKS.frobenius_schur_phase_from_Fsymbol(a) atol = 1.0e-12 rtol = 1.0e-12
+        end
     end
 
     @testset "Sector $Istr: Unitarity of F-move" begin
@@ -29,10 +94,7 @@
                     for e in es
                         for f in fs
                             Fs = Fsymbol(a, b, c, d, e, f)
-                            push!(
-                                Fblocks,
-                                reshape(Fs, (size(Fs, 1) * size(Fs, 2), size(Fs, 3) * size(Fs, 4)))
-                            )
+                            push!(Fblocks, reshape(Fs, (size(Fs, 1) * size(Fs, 2), size(Fs, 3) * size(Fs, 4))))
                         end
                     end
                     F = hvcat(length(fs), Fblocks...)
@@ -55,7 +117,7 @@
     end
 
     if hasfusiontensor(I)
-        @testset "Sector $Istr: fusion tensor and F-move" begin
+        @testset "Sector $Istr: fusion tensor and Fsymbol" begin # not from TKS because sparse arrays
             for a in smallset(I), b in smallset(I), c in smallset(I)
                 for e in ⊗(a, b), f in ⊗(b, c)
                     for d in intersect(⊗(e, c), ⊗(a, f))

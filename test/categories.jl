@@ -1,41 +1,30 @@
-using CategoryData
-using Test, TestExtras
-using Random
 using TensorKitSectors
-using Base.Iterators: product
-using LinearAlgebra: LinearAlgebra
-using TensorOperations: @tensor
 
-Random.seed!(1234)
+testsuite_path = joinpath(
+    dirname(dirname(pathof(TensorKitSectors))), # TensorKitSectors root
+    "test", "testsuite.jl"
+)
+include(testsuite_path)
 
-const TKS = TensorKitSectors
+println("
+--------------------------------
+|   Testing fusion categories   |
+--------------------------------
+")
 
-smallset(::Type{I}) where {I <: Object} = values(I)
-function randsector(::Type{I}) where {I <: Object}
-    s = collect(smallset(I))
-    a = rand(s)
-    while isunit(a) # don't use trivial label
-        a = rand(s)
-    end
-    return a
+for sector in CategoryData.list_fusioncategories() # doesn't work for RepA4 because sparse arrays
+    SectorTestSuite.test_sector(Object{sector})
 end
 
-function hasfusiontensor(I::Type{<:Object})
-    try
-        fusiontensor(unit(I), unit(I), unit(I))
-        return true
-    catch e
-        if e isa MethodError
-            return false
-        else
-            rethrow(e)
-        end
-    end
-end
+println("
+----------------------------------------
+|   Testing braided fusion categories   |
+----------------------------------------
+")
 
-include("fusionrings.jl")
-include("fusioncategories.jl")
-include("braidedcategories.jl")
+for sector in CategoryData.list_braidedcategories()
+    SectorTestSuite.test_sector(Object{sector})
+end
 
 # printing tests
 object_name_list = [Fib, Ising, H1, H2, H3] # these have unit alias :I
@@ -79,8 +68,4 @@ end
         @test_throws ArgumentError(error) @macroexpand @objectnames testcat = UFC{5, 1, 2, 4, 0} α β γ δ
         @test_throws ArgumentError(error) @macroexpand @objectnames testcat2 = PMFC{6, 1, 0, 4, 0, 7} a b c d e f g
     end
-end
-
-@testset "CategoryData.jl" verbose = true begin
-    include("categories.jl")
 end
