@@ -33,9 +33,8 @@ function hasfusiontensor(I::Type{<:Object})
     end
 end
 
-include("fusionrings.jl")
-include("fusioncategories.jl")
-include("braidedcategories.jl")
+include("fusionrings.jl") # custom test selection
+include("categories.jl")
 
 # printing tests
 object_name_list = [Fib, Ising, H1, H2, H3] # these have unit alias :I
@@ -79,8 +78,4 @@ end
         @test_throws ArgumentError(error) @macroexpand @objectnames testcat = UFC{5, 1, 2, 4, 0} α β γ δ
         @test_throws ArgumentError(error) @macroexpand @objectnames testcat2 = PMFC{6, 1, 0, 4, 0, 7} a b c d e f g
     end
-end
-
-@testset "CategoryData.jl" verbose = true begin
-    include("categories.jl")
 end
