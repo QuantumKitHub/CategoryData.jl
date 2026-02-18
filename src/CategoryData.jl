@@ -8,7 +8,7 @@ using Tar, Inflate, SHA
 using TensorKitSectors
 using TensorKitSectors: SectorValues
 using TensorKitSectors: SimpleFusion, GenericFusion, Anyonic, NoBraiding
-
+using TensorKitSectors: @tensor
 using SparseArrayKit
 
 export FusionRing, FusionCategory, BraidedCategory
