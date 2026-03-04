@@ -33,3 +33,6 @@ TestExtras = "5ed8adda-3752-4e41-b88a-e8b09835ee3a"
 
 [targets]
 test = ["Test", "TestExtras", "LinearAlgebra", "Random"]
+
+[sources]
+TensorKitSectors = {url = "https://github.com/QuantumKitHub/TensorKitSectors.jl", rev = "bd/multitestcompat"}
