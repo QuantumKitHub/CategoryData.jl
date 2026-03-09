@@ -19,17 +19,17 @@ using .SectorTestSuite: randsector
     include("fusionrings.jl") # custom test selection
 end
 
-@testset "Fusion categories" begin  
-    for sector in CategoryData.list_fusioncategories()  
-        SectorTestSuite.test_sector(Object{sector})  
-    end  
-end  
+@testset "Fusion categories" begin
+    for sector in CategoryData.list_fusioncategories()
+        SectorTestSuite.test_sector(Object{sector})
+    end
+end
 
 @testset "Braided categories" begin
-    for sector in CategoryData.list_braidedcategories()  
-        SectorTestSuite.test_sector(Object{sector})  
-    end  
-end 
+    for sector in CategoryData.list_braidedcategories()
+        SectorTestSuite.test_sector(Object{sector})
+    end
+end
 
 SectorTestSuite.test_sector(Object{RepA4} ⊠ Object{Fib})
 
