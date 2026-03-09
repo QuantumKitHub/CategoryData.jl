@@ -42,7 +42,7 @@ function TensorKitSectors.dual(a::Object{F}) where {F}
         return a
     else
         return Object{F}(
-            findfirst(x -> Nsymbol(a, x, one(a)) == 1, collect(values(typeof(a))))
+            findfirst(x -> Nsymbol(a, x, unit(a)) == 1, collect(values(typeof(a))))
         )
     end
 end

@@ -206,6 +206,53 @@ end
     end
 end
 
+# remove the view calls
+function TensorKitSectors.Fsymbol_from_fusiontensor(
+        a::Object{I}, b::Object{I}, c::Object{I},
+        d::Object{I}, e::Object{I}, f::Object{I}
+    ) where {I <: FusionCategory}
+    T = fusionscalartype(Object{I})
+    Nabe, Necd, Nbcd, Nafd = Nsymbol(a, b, e), Nsymbol(e, c, d), Nsymbol(b, c, f), Nsymbol(a, f, d)
+    if iszero(Nabe * Necd * Nbcd * Nafd)
+        return TensorKitSectors.FusionStyle(Object{I}) isa TensorKitSectors.MultiplicityFreeFusion ? zero(T) : zeros(T, Nabe, Necd, Nbcd, Nafd)
+    else
+        A = fusiontensor(a, b, e)
+        B = fusiontensor(e, c, d)[:, :, 1, :]
+        C = fusiontensor(b, c, f)
+        D = fusiontensor(a, f, d)[:, :, 1, :]
+
+        @tensor F[-1, -2, -3, -4] := conj(D[1, 5, -4]) * conj(C[2, 4, 5, -3]) * A[1, 2, 3, -1] * B[3, 4, -2]
+        return TensorKitSectors.FusionStyle(Object{I}) isa TensorKitSectors.MultiplicityFreeFusion ? only(F) : F
+    end
+end
+function TensorKitSectors.Asymbol_from_fusiontensor(a::Object{F}, b::Object{F}, c::Object{F}) where {F <: FusionCategory}
+    Nabc = Nsymbol(a, b, c)
+    T = fusionscalartype(Object{F})
+    if Nabc == 0
+        return TensorKitSectors.FusionStyle(Object{F}) isa TensorKitSectors.MultiplicityFreeFusion ? zero(T) : zeros(T, 0, 0)
+    else
+        C1 = fusiontensor(a, b, c)[:, 1, :, :]
+        C2 = fusiontensor(dual(a), c, b)[:, :, 1, :]
+        Za = sqrtdim(a) * fusiontensor(a, dual(a), leftunit(a))[:, :, 1, 1]
+        @tensor A[-1, -2] := sqrtdim(b) / sqrtdim(c) * conj(Za[1, 2]) * C1[1, 3, -1] * C2[2, 3, -2]
+        return TensorKitSectors.FusionStyle(Object{F}) isa TensorKitSectors.MultiplicityFreeFusion ? only(A) : A
+    end
+end
+function TensorKitSectors.Bsymbol_from_fusiontensor(a::Object{F}, b::Object{F}, c::Object{F}) where {F <: FusionCategory}
+    Nabc = Nsymbol(a, b, c)
+    T = fusionscalartype(Object{F})
+    if Nabc == 0
+        return TensorKitSectors.FusionStyle(Object{F}) isa TensorKitSectors.MultiplicityFreeFusion ? zero(T) : zeros(T, 0, 0)
+    else
+        C1 = fusiontensor(a, b, c)[1, :, :, :]
+        C2 = fusiontensor(c, dual(b), a)[:, :, 1, :]
+        Zb = sqrtdim(b) * fusiontensor(b, dual(b), leftunit(b))[:, :, 1, 1]
+        @tensor B[-1, -2] := sqrtdim(a) / sqrtdim(c) * conj(Zb[1, 2]) * C1[1, 3, -1] * C2[3, 2, -2]
+        return TensorKitSectors.FusionStyle(Object{F}) isa TensorKitSectors.MultiplicityFreeFusion ? only(B) : B
+    end
+end
+
+
 # Rsymbols
 # --------
 
@@ -289,6 +336,20 @@ end
 
             return $(R_array)[(a.id, b.id, c.id)]
         end
+    end
+end
+
+# remove view calls
+function TensorKitSectors.Rsymbol_from_fusiontensor(a::Object{F}, b::Object{F}, c::Object{F}) where {F <: BraidedCategory}
+    Nabc = Nsymbol(a, b, c)
+    T = braidingscalartype(Object{F})
+    if Nabc == 0
+        return TensorKitSectors.FusionStyle(Object{F}) isa TensorKitSectors.MultiplicityFreeFusion ? zero(T) : zeros(T, 0, 0)
+    else
+        A = fusiontensor(a, b, c)[:, :, 1, :]
+        B = fusiontensor(b, a, c)[:, :, 1, :]
+        @tensor R[-1 -2] := conj(B[1 2 -2]) * A[2 1 -1]
+        return TensorKitSectors.FusionStyle(Object{F}) isa TensorKitSectors.MultiplicityFreeFusion ? only(R) : R
     end
 end
 
