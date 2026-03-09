@@ -2,39 +2,36 @@ using CategoryData
 using Test, TestExtras
 using Random
 using TensorKitSectors
-using Base.Iterators: product
 using LinearAlgebra: LinearAlgebra
 using TensorOperations: @tensor
 
 Random.seed!(1234)
 
-const TKS = TensorKitSectors
+testsuite_path = joinpath(
+    dirname(dirname(pathof(TensorKitSectors))), # TensorKitSectors root
+    "test", "testsuite.jl"
+)
+include(testsuite_path)
+using .SectorTestSuite: randsector
 
-smallset(::Type{I}) where {I <: Object} = values(I)
-function randsector(::Type{I}) where {I <: Object}
-    s = collect(smallset(I))
-    a = rand(s)
-    while isunit(a) # don't use trivial label
-        a = rand(s)
-    end
-    return a
+# sector tests
+@testset "Fusion rings" begin
+    include("fusionrings.jl") # custom test selection
 end
 
-function hasfusiontensor(I::Type{<:Object})
-    try
-        fusiontensor(unit(I), unit(I), unit(I))
-        return true
-    catch e
-        if e isa MethodError
-            return false
-        else
-            rethrow(e)
-        end
-    end
-end
+@testset "Fusion categories" begin  
+    for sector in CategoryData.list_fusioncategories()  
+        SectorTestSuite.test_sector(Object{sector})  
+    end  
+end  
 
-include("fusionrings.jl") # custom test selection
-include("categories.jl")
+@testset "Braided categories" begin
+    for sector in CategoryData.list_braidedcategories()  
+        SectorTestSuite.test_sector(Object{sector})  
+    end  
+end 
+
+SectorTestSuite.test_sector(Object{RepA4} ⊠ Object{Fib})
 
 # printing tests
 object_name_list = [Fib, Ising, H1, H2, H3] # these have unit alias :I

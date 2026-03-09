@@ -3,7 +3,7 @@
     Istr = TensorKitSectors.type_repr(I)
 
     @testset "Sector $Istr: Basic properties" begin
-        s = (randsector(I), randsector(I), randsector(I))
+        s = rand(collect(values(I)), 3)
         @test Base.eval(Main, Meta.parse(sprint(show, I))) == I
         @test Base.eval(Main, Meta.parse(TensorKitSectors.type_repr(I))) == I
         @test Base.eval(Main, Meta.parse(sprint(show, s[1]))) == s[1]
@@ -35,7 +35,7 @@
             @test_throws ArgumentError TensorKitSectors.findindex(values(I), unit(I))
         elseif hasmethod(Base.getindex, Tuple{typeof(values(I)), Int})
             @test (@constinferred TensorKitSectors.findindex(values(I), unit(I))) == 1
-            for s in smallset(I)
+            for s in values(I)
                 @test (@constinferred values(I)[TensorKitSectors.findindex(values(I), s)]) == s
             end
         end
