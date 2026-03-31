@@ -88,8 +88,9 @@ _umtcs_lowrank_centralcharge = [
         4//1 => PMFC{5, 1, 4, 1, 0, 1},
         0//1 => PMFC{5, 1, 4, 1, 0, 2},
         (2//1, 1) => PMFC{5, 1, 0, 3, 0, 0}, # SU2_4
+        # Cannot find TimeReversed{SU2_4}, but it should be here with PMFC{5, 1, 0, 3, 0, 1}
         (2//1, 2) => PMFC{5, 1, 0, 3, 1, 0}, # TimeReversed{JK4} http://dx.doi.org/10.1103/PhysRevA.92.012301
-        # Cannot find TimeReversed{SU2_4} or JK4, but they should be here somewhere with PMFC{5, 1, 0, 3, x, y}
+        # Cannot find JK4, but it should be here somewhere with PMFC{5, 1, 0, 3, 1, 1}
         # Cannot find PSU2_9 and its time-reversal, but they should be here somewhere with PMFC{5, 1, 0, x, y, z} with c = ± 16//11
         # Cannot find c = ± 18//7 UMTCs. They are not SimpleFusion. Should be PMFC{5, 2, ?, ?, ?, ?}
     )
