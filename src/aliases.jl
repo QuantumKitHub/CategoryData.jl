@@ -6,7 +6,6 @@ const Z5 = PMFC{5, 1, 4, 1, 0, 0}
 const Z6 = PMFC{6, 1, 4, 1, 0, 0}
 
 const Z2xZ2 = PMFC{4, 1, 0, 1, 0, 0}
-const Z2xsVec = PMFC{4, 1, 0, 1, 0, 1}
 
 # Rep[Dₙ]
 const RepD3 = PMFC{3, 1, 0, 2, 0, 0}
@@ -36,21 +35,37 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 
 # Varia
 @objectnames Fib = PMFC{2, 1, 0, 2, 0, 0} I τ
-@objectnames Ising = PMFC{3, 1, 0, 1, 1, 3} I ψ σ
 @objectnames sVec = PMFC{2, 1, 0, 1, 0, 1} I ψ
 @objectnames Semion = PMFC{2, 1, 0, 1, 1, 0} I ϵ
+@objectnames U1_1 = PMFC{2, 1, 0, 1, 1, 0} 0 1
+@objectnames SU2_1 = PMFC{2, 1, 0, 1, 1, 0} 0 1
+@objectnames PSU2_3 = PMFC{2, 1, 0, 2, 0, 0} 0 2
+
+@objectnames Z3MTC = PMFC{3, 1, 2, 1, 0, 1} 0 1 2
+@objectnames Ising = PMFC{3, 1, 0, 1, 1, 3} I ψ σ
+@objectnames SU2_2 = PMFC{3, 1, 0, 1, 0, 3} 0 2 1
+@objectnames PSU2_5 = PMFC{3, 1, 0, 3, 0, 0} 0 4 2
+
 @objectnames ToricCode = PMFC{4, 1, 0, 1, 0, 2} I e m ψ
 # @objectnames ThreeFermion = PMFC{4, 1, 0, 1, 0, 3} I f1 f2 f3 
+@objectnames Z2sVec = PMFC{4, 1, 0, 1, 0, 1}
 @objectnames ZSemion = PMFC{4, 1, 0, 1, 1, 0} II ϵI ϵϵ Iϵ
 @objectnames SemionSemion = PMFC{4, 1, 0, 1, 1, 1} II ϵI ϵϵ Iϵ
+# @objectnames Z2Semion = PMFC{4, 1, 0, 1, 1, ?}
+# @objectnames sVecSemion = = PMFC{4, 1, 0, 1, 1, ?}
+@objectnames SemionFib = PMFC{4, 1, 0, 2, 1, 1} II ϵI ϵτ Iτ
+@objectnames U1_2 = PMFC{4, 1, 2, 1, 2, 0} 0 1 2 3
 @objectnames ZFib = PMFC{4, 1, 0, 5, 0, 1} II τI Iτ ττ
 # @objectnames FibFib = PMFC{4, 1, 0, 5, 0, 2} II τI Iτ ττ
-@objectnames Z3MTC = PMFC{3, 1, 2, 1, 0, 1} 0 1 2
+@objectnames PSU2_7 = PMFC{4, 1, 0, 6, 0, 0} 0 6 2 4
+
 @objectnames SU2_4 = PMFC{5, 1, 0, 3, 0, 0} 0 4 3 1 2
+# @objectnames JK4
+# @objectnames PSU2_9
 
 _umtcs_lowrank_centralcharge = [
     Dict(
-        1//1 => PMFC{2, 1, 0, 1, 1, 0}, # Semion
+        1//1 => PMFC{2, 1, 0, 1, 1, 0}, # Semion, U1_1, SU2_1
         -1//1 => PMFC{2, 1, 0, 1, 1, 1}, # TimeReversed{Semion}
         -14//5 => PMFC{2, 1, 0, 2, 0, 0}, # TimeReversed{Fib}
         14//5 => PMFC{2, 1, 0, 2, 0, 1}, # Fib
@@ -58,27 +73,27 @@ _umtcs_lowrank_centralcharge = [
     Dict(
         2//1 => PMFC{3, 1, 2, 1, 0, 1}, # Z3MTC
         -2//1 => PMFC{3, 1, 2, 1, 0, 2}, # TimeReversed{Z3MTC}
-        5//2 => PMFC{3, 1, 0, 1, 0, 0}, # The following are 8-fold ways
-        -3//2 => PMFC{3, 1, 0, 1, 0, 1},
+        5//2 => PMFC{3, 1, 0, 1, 0, 0}, # The following are 8-fold ways of Ising-type UMTCs
+        -3//2 => PMFC{3, 1, 0, 1, 0, 1}, # TimeReversed{SU2_2}
         -5//2 => PMFC{3, 1, 0, 1, 0, 2},
-        3//2 => PMFC{3, 1, 0, 1, 0, 3},
+        3//2 => PMFC{3, 1, 0, 1, 0, 3}, # SU2_2
         7//2 => PMFC{3, 1, 0, 1, 1, 0},
         -1//2 => PMFC{3, 1, 0, 1, 1, 1}, # TimeReversed{Ising}
         -7//2 => PMFC{3, 1, 0, 1, 1, 2},
         1//2 => PMFC{3, 1, 0, 1, 1, 3}, # Ising
-        8//7 =>PMFC{3, 1, 0, 3, 0, 0}, # PSU(2)₅
-        -8//7 => PMFC{3, 1, 0, 3, 0, 1},
+        8//7 =>PMFC{3, 1, 0, 3, 0, 0}, # PSU2_5
+        -8//7 => PMFC{3, 1, 0, 3, 0, 1}, # TimeReversed{PSU2_5}
     ),
     Dict(
         (0//1, 1) => PMFC{4, 1, 0, 1, 0, 2}, # Toric code ≅ Z(Rep[Z₂])
         # 4//1 => PMFC{4, 1, 0, 1, 0, 3}, # ThreeFermion
         (0//1, 2) => PMFC{4, 1, 0, 1, 1, 0}, # Z(Semion) ≅ Semion ⊠ TimeReversed{Semion}
         2//1 => PMFC{4, 1, 0, 1, 1, 1}, # Semion ⊠ Semion
-        # -2//1 => PMFC{4, 1, 0, 1, 1, ?}, # TimeReversed{Semion} ⊠ TimeReversed{Semion}, but with error!
-        1//1 => PMFC{4, 1, 2, 1, 2, 0}, # Four Z₄ MTCs
+        # -2//1 => PMFC{4, 1, 0, 1, 1, ?}, # TimeReversed{Semion} ⊠ TimeReversed{Semion}
+        1//1 => PMFC{4, 1, 2, 1, 2, 0}, # U1_2
         3//1 => PMFC{4, 1, 2, 1, 2, 1},
         -3//1 => PMFC{4, 1, 2, 1, 2, 2},
-        -1//1 => PMFC{4, 1, 2, 1, 2, 3},
+        -1//1 => PMFC{4, 1, 2, 1, 2, 3}, # TimeReversed{U1_2}
         -9//5 => PMFC{4, 1, 0, 2, 1, 0}, # Semion ⊠ TimeReversed{Fib}
         19//5 => PMFC{4, 1, 0, 2, 1, 1}, # Semion ⊠ Fib
         -19//5 => PMFC{4, 1, 0, 2, 1, 2}, # TimeReversed{Semion} ⊠ TimeReversed{Fib}
