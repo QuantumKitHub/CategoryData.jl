@@ -39,7 +39,12 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames Ising = PMFC{3, 1, 0, 1, 1, 3} I ψ σ
 @objectnames sVec = PMFC{2, 1, 0, 1, 0, 1} I ψ
 @objectnames Semion = PMFC{2, 1, 0, 1, 1, 0} I ϵ
-@objectnames ToricCode = PMFC{4, 1, 0, 1, 0, 0} I e m ψ
+@objectnames ToricCode = PMFC{4, 1, 0, 1, 0, 2} I e m ψ
+# @objectnames ThreeFermion = PMFC{4, 1, 0, 1, 0, 3} I f1 f2 f3 
+@objectnames ZSemion = PMFC{4, 1, 0, 1, 1, 0} II ϵI ϵϵ Iϵ
+@objectnames SemionSemion = PMFC{4, 1, 0, 1, 1, 1} II ϵI ϵϵ Iϵ
+@objectnames ZFib = PMFC{4, 1, 0, 5, 0, 1} II τI Iτ ττ
+# @objectnames FibFib = PMFC{4, 1, 0, 5, 0, 2} II τI Iτ ττ
 @objectnames Z3MTC = PMFC{3, 1, 2, 1, 0, 1} 0 1 2
 @objectnames SU2_4 = PMFC{5, 1, 0, 3, 0, 0} 0 4 3 1 2
 
@@ -66,10 +71,10 @@ _umtcs_lowrank_centralcharge = [
     ),
     Dict(
         (0//1, 1) => PMFC{4, 1, 0, 1, 0, 2}, # Toric code ≅ Z(Rep[Z₂])
-        # 4//1 => PMFC{4, 1, 0, 1, 0, ?}, # ThreeFermion, but with error!
+        # 4//1 => PMFC{4, 1, 0, 1, 0, 3}, # ThreeFermion
         (0//1, 2) => PMFC{4, 1, 0, 1, 1, 0}, # Z(Semion) ≅ Semion ⊠ TimeReversed{Semion}
         2//1 => PMFC{4, 1, 0, 1, 1, 1}, # Semion ⊠ Semion
-        # -2//1 => PMFC{4, 1, 0, 1, 1, ?}, # TODO: TimeReversed{Semion} ⊠ TimeReversed{Semion}, but with error!
+        # -2//1 => PMFC{4, 1, 0, 1, 1, ?}, # TimeReversed{Semion} ⊠ TimeReversed{Semion}, but with error!
         1//1 => PMFC{4, 1, 2, 1, 2, 0}, # Four Z₄ MTCs
         3//1 => PMFC{4, 1, 2, 1, 2, 1},
         -3//1 => PMFC{4, 1, 2, 1, 2, 2},
@@ -80,7 +85,7 @@ _umtcs_lowrank_centralcharge = [
         9//5 => PMFC{4, 1, 0, 2, 1, 3}, # TimeReversed{Semion} ⊠ Fib
         12//5 => PMFC{4, 1, 0, 5, 0, 0}, # TimeReversed{Fib} ⊠ TimeReversed{Fib}
         (0//1, 3) => PMFC{4, 1, 0, 5, 0, 1}, # TimeReversed{Fib} ⊠ Fib
-        -12//5 => PMFC{4, 1, 0, 5, 0, 2}, # Fib ⊠ Fib
+        # -12//5 => PMFC{4, 1, 0, 5, 0, 2}, # Fib ⊠ Fib
         10//3 => PMFC{4, 1, 0, 6, 0, 0}, # PSU2_7
         -10//3 => PMFC{4, 1, 0, 6, 0, 1}, # TimeReversed{PSU2_7}
     ),
