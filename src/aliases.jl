@@ -35,7 +35,7 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 
 # Varia
 @objectnames Fib = PMFC{2, 1, 0, 2, 0, 0} I τ
-@objectnames sVec = PMFC{2, 1, 0, 1, 0, 1} I ψ
+@objectnames sVec = PMFC{2, 1, 0, 1, 0, 1} I ψ # Non-modular
 @objectnames Semion = PMFC{2, 1, 0, 1, 1, 0} I ϵ
 @objectnames U1_1 = PMFC{2, 1, 0, 1, 1, 0} 0 1
 @objectnames SU2_1 = PMFC{2, 1, 0, 1, 1, 0} 0 1
@@ -48,11 +48,11 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 
 @objectnames ToricCode = PMFC{4, 1, 0, 1, 0, 2} I e m ψ
 # @objectnames ThreeFermion = PMFC{4, 1, 0, 1, 0, 3} I f1 f2 f3 
-@objectnames Z2sVec = PMFC{4, 1, 0, 1, 0, 1}
+@objectnames Z2sVec = PMFC{4, 1, 0, 1, 0, 1} 0I 1I 0ψ 1ψ # Non-modular
 @objectnames ZSemion = PMFC{4, 1, 0, 1, 1, 0} II ϵI ϵϵ Iϵ
 @objectnames SemionSemion = PMFC{4, 1, 0, 1, 1, 1} II ϵI ϵϵ Iϵ
+@objectnames sVecSemion = PMFC{4, 1, 0, 1, 1, 2} II Iϵ ψI ψϵ # Non-modular
 # @objectnames Z2Semion = PMFC{4, 1, 0, 1, 1, ?}
-# @objectnames sVecSemion = = PMFC{4, 1, 0, 1, 1, ?}
 @objectnames SemionFib = PMFC{4, 1, 0, 2, 1, 1} II ϵI ϵτ Iτ
 @objectnames U1_2 = PMFC{4, 1, 2, 1, 2, 0} 0 1 2 3
 @objectnames ZFib = PMFC{4, 1, 0, 5, 0, 1} II τI Iτ ττ
@@ -68,7 +68,7 @@ _umtcs_lowrank_centralcharge = [
         1//1 => PMFC{2, 1, 0, 1, 1, 0}, # Semion, U1_1, SU2_1
         -1//1 => PMFC{2, 1, 0, 1, 1, 1}, # TimeReversed{Semion}
         -14//5 => PMFC{2, 1, 0, 2, 0, 0}, # TimeReversed{Fib}
-        14//5 => PMFC{2, 1, 0, 2, 0, 1}, # Fib
+        14//5 => PMFC{2, 1, 0, 2, 0, 1}, # Fib, PSU2_3
     ),
     Dict(
         2//1 => PMFC{3, 1, 2, 1, 0, 1}, # Z3MTC
