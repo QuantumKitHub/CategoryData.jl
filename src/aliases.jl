@@ -14,6 +14,9 @@ const RepD5 = PMFC{4, 1, 0, 3, 0, 0}
 const RepD6 = PMFC{6, 1, 0, 2, 0, 0}
 const RepD7 = PMFC{5, 1, 0, 4, 0, 0}
 
+# Rep[Q₈]
+# const RepQ8 = PMFC{5, 1, 0, 1, ?, ?}
+
 # Vec[Dₙ]
 const VecD3 = UFC{6, 1, 2, 1, 0}
 
@@ -61,7 +64,7 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 
 @objectnames SU2_4 = PMFC{5, 1, 0, 3, 0, 0} 0 4 3 1 2
 # @objectnames JK4
-# @objectnames PSU2_9
+@objectnames PSU2_9 = PMFC{5, 1, 0, 10, 0, 1} 0 8 2 6 4
 
 _umtcs_lowrank_centralcharge = [
     Dict(
@@ -111,7 +114,8 @@ _umtcs_lowrank_centralcharge = [
         # Cannot find TimeReversed{SU2_4}, but it should be here with PMFC{5, 1, 0, 3, 0, 1}
         (2//1, 2) => PMFC{5, 1, 0, 3, 1, 0}, # TimeReversed{JK4} http://dx.doi.org/10.1103/PhysRevA.92.012301
         # Cannot find JK4, but it should be here somewhere with PMFC{5, 1, 0, 3, 1, 1}
-        # Cannot find PSU2_9 and its time-reversal, but they should be here somewhere with PMFC{5, 1, 0, x, y, z} with c = ± 16//11
+        -16//11 => PMFC{5, 1, 0, 10, 0, 0}, # TimeReversed{PSU2_9}
+        16//11 => PMFC{5, 1, 0, 10, 0, 1}, # PSU2_9
         # Cannot find c = ± 18//7 UMTCs. They are not SimpleFusion. Should be PMFC{5, 2, ?, ?, ?, ?}
     )
 ]
