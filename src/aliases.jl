@@ -40,7 +40,7 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames ZVecS3 = ZVecS3 A B C F G H D E
 
 # Varia
-# Notation: 𝒞⁻: braided reversed of 𝒞; 𝒞⁼G: G-equivariantization of 𝒞. There may exist several inequivalent equivariantiazations. We use numbers to indicate them.
+# Notation: 𝒞⁻: braided reversed of 𝒞; 𝒞ᴳG: G-equivariantization of 𝒞. There may exist several inequivalent equivariantiazations. We use numbers to indicate them.
 @objectnames Fib⁻ = PMFC{2, 1, 0, 2, 0, 0} I τ
 @objectnames Fib = PMFC{2, 1, 0, 2, 0, 1} I τ
 @objectnames Semion = PMFC{2, 1, 0, 1, 1, 0} I ϵ
@@ -80,26 +80,26 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 # @objectnames FibFib = PMFC{4, 1, 0, 5, 0, :?} II τI Iτ ττ
 @objectnames Fib⁻Fib⁻ = PMFC{4, 1, 0, 5, 0, 0} II τI Iτ ττ
 @objectnames ZFib = PMFC{4, 1, 0, 5, 0, 1} II τI Iτ ττ
-@objectnames Z5MTC_0⁼Z2 = PMFC{4, 1, 0, 3, 0, 1} _0I _0E _14 _23 # Z2-equivariantization of Z5MTC_0, see table XXI of https://arxiv.org/pdf/1602.05946
-@objectnames Z5MTC_4⁼Z2 = PMFC{4, 1, 0, 3, 0, 2} _0I _0E _14 _23 # Z2-equivariantization of Z5MTC_4, see table XXI of https://arxiv.org/pdf/1602.05946
+@objectnames Z5MTC_0ᴳZ2 = PMFC{4, 1, 0, 3, 0, 1} _0I _0E _14 _23 # Z2-equivariantization of Z5MTC_0, see table XXI of https://arxiv.org/pdf/1602.05946
+@objectnames Z5MTC_4ᴳZ2 = PMFC{4, 1, 0, 3, 0, 2} _0I _0E _14 _23 # Z2-equivariantization of Z5MTC_4, see table XXI of https://arxiv.org/pdf/1602.05946
 # One missing: Z3-equivariantization of the three-fermion MTC, see table XXIV of https://arxiv.org/pdf/1602.05946, shares the same fusion rule as RepA4.
 
 @objectnames Z5MTC_0 = PMFC{5, 1, 4, 1, 0, 2} _0 _1 _4 _3 _2
 @objectnames Z5MTC_4 = PMFC{5, 1, 4, 1, 0, 1} _0 _1 _4 _3 _2
 @objectnames JK4⁻ = PMFC{5, 1, 0, 3, 1, 0} _0 _4 _3 _1 _2
-@objectnames U1_4⁼¹Z2 = PMFC{5, 1, 0, 1, 0, 0} _0I _0E _2I _2E _13 
-@objectnames U1_4⁼¹Z2⁻ = PMFC{5, 1, 0, 1, 0, 3} _0I _0E _2I _2E _13
-@objectnames SemionSemion⁼Z2 = PMFC{5, 1, 0, 1, 0, 1} III IIE ϵϵI ϵϵE ϵIIϵ
-@objectnames SemionSemion⁼Z2⁻ = PMFC{5, 1, 0, 1, 0, 2} III IIE ϵϵI ϵϵE ϵIIϵ
-@objectnames Kitaev16_6⁼¹Z2⁻ = PMFC{5, 1, 0, 1, 0, 4} _0I _0E _2I _2E _13
-@objectnames U1_4⁼²Z2⁻ = PMFC{5, 1, 0, 1, 1, 0} _0I _0E _2I _2E _13
-@objectnames ToricCode⁼Z2 = PMFC{5, 1, 0, 1, 1, 1} II IE ψI ψE em
-@objectnames Kitaev16_8⁼Z2 = PMFC{5, 1, 0, 1, 1, 2} II IE ψI ψE em
-@objectnames Kitaev16_6⁼²Z2 = PMFC{5, 1, 0, 1, 1, 4} _0I _0E _2I _2E _13
-@objectnames Kitaev16_6⁼²Z2⁻ = PMFC{5, 1, 0, 1, 1, 3} _0I _0E _2I _2E _13
-@objectnames Semion⁼Z2xZ2 = PMFC{5, 1, 0, 1, 2, 0} I a b c σ # Already RepQ8 as fusion category. One only need to add its trivial braiding solution.
-@objectnames Z7MTC⁼Z2 = PMFC{5, 1, 0, 4, 0, 1} _0I _0E _25 _16 _34
-@objectnames Kitaev16_8⁼S3 = PMFC{5, 1, 0, 6, 0, 0} # S₃-extension of the three-fermion UMTC, see table XXVI of https://arxiv.org/pdf/1602.05946. Share the same fusion rule as RepS4.
+@objectnames U1_4ᴳ¹Z2 = PMFC{5, 1, 0, 1, 0, 0} _0I _0E _2I _2E _13
+@objectnames U1_4ᴳ¹Z2⁻ = PMFC{5, 1, 0, 1, 0, 3} _0I _0E _2I _2E _13
+@objectnames SemionSemionᴳZ2 = PMFC{5, 1, 0, 1, 0, 1} III IIE ϵϵI ϵϵE ϵIIϵ
+@objectnames SemionSemionᴳZ2⁻ = PMFC{5, 1, 0, 1, 0, 2} III IIE ϵϵI ϵϵE ϵIIϵ
+@objectnames Kitaev16_6ᴳ¹Z2⁻ = PMFC{5, 1, 0, 1, 0, 4} _0I _0E _2I _2E _13
+@objectnames U1_4ᴳ²Z2⁻ = PMFC{5, 1, 0, 1, 1, 0} _0I _0E _2I _2E _13
+@objectnames ToricCodeᴳZ2 = PMFC{5, 1, 0, 1, 1, 1} II IE ψI ψE em
+@objectnames Kitaev16_8ᴳZ2 = PMFC{5, 1, 0, 1, 1, 2} II IE ψI ψE em
+@objectnames Kitaev16_6ᴳ²Z2 = PMFC{5, 1, 0, 1, 1, 4} _0I _0E _2I _2E _13
+@objectnames Kitaev16_6ᴳ²Z2⁻ = PMFC{5, 1, 0, 1, 1, 3} _0I _0E _2I _2E _13
+@objectnames SemionᴳZ2xZ2 = PMFC{5, 1, 0, 1, 2, 0} I a b c σ # Already RepQ8 as fusion category. One only need to add its trivial braiding solution.
+@objectnames Z7MTCᴳZ2 = PMFC{5, 1, 0, 4, 0, 1} _0I _0E _25 _16 _34
+@objectnames Kitaev16_8ᴳS3 = PMFC{5, 1, 0, 6, 0, 0} I a b σ τ # S₃-equivariantization of the three-fermion UMTC, see table XXV and XXVI of https://arxiv.org/pdf/1602.05946. Share the same fusion rule as RepS4.
 
 # --- SU2 ---
 # @objectnames SU2_1 = PMFC{2, 1, 0, 1, 1, 0} _0 _1 # Already defined in Semion
