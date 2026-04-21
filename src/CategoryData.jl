@@ -13,13 +13,13 @@ using SparseArrayKit
 
 export FusionRing, FusionCategory, BraidedCategory
 export FR, UFC, PMFC
+export Z2, Z3, Z4, Z5, Z6, Z2xZ2, RepD3, RepD4, RepD5, RepD6, RepD7, RepS4
 export RepA4, E6, H1, H2, H3, ZVecS3, ZVecD4, RepD4fusion, RepQ8fusion, RepH8, TYℤ₂xℤ₂anomalous
 export sVec, Fib, Fib⁻, Semion, Semion⁻
 export Z3MTC, Z3MTC⁻, Ising, Ising⁻, Ising3, Ising3⁻, Ising5, Ising5⁻, Ising7, Ising7⁻, PSU2_4, PSU2_4⁻, PSU2_5, PSU2_5⁻
 export sVecZ2, ToricCode, SemionSemion, ZSemion, sVecSemion, U1_4, U1_4⁻, sRepZ4, SemionZ2_twist, SemionZ2_twist⁻, SemionFib, Semion⁻Fib, SemionFib⁻, Semion⁻Fib⁻, FibZ2, Fib⁻Z2, sVecFib, sVecFib⁻, Fib⁻Fib⁻, ZFib, PSU2_6, PSU2_7, PSU2_7⁻, Z5MTC_0ᴳZ2, Z5MTC_4ᴳZ2
 export Z5MTC_0, Z5MTC_4, SU2_4, JK4⁻, PSU2_8, PSU2_8⁻, PSU2_9, PSU2_9⁻, U1_4ᴳ¹Z2, U1_4ᴳ¹Z2⁻, SemionSemionᴳZ2, SemionSemionᴳZ2⁻, Kitaev16_6ᴳ¹Z2⁻, U1_4ᴳ²Z2⁻, ToricCodeᴳZ2, Kitaev16_8ᴳZ2, Kitaev16_6ᴳ²Z2, Kitaev16_6ᴳ²Z2⁻, SemionᴳZ2xZ2, Z7MTCᴳZ2
-export SU2_5, SU2_5⁻, PSU2_10, PSU2_10⁻, PSU2_11, PSU2_11⁻
-export PSU2_6, PSU2_7, PSU2_8, PSU2_9, PSU2_10, PSU2_11
+export SU2_5, SU2_5⁻, PSU2_10, PSU2_10⁻, PSU2_11, PSU2_11⁻, Kitaev16_8ᴳS3
 export Kitaev16_6, Kitaev16_6⁻
 export Object
 export multiplicity, rank, algebraic_structure, selfduality
