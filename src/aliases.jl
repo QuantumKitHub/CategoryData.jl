@@ -41,21 +41,23 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 
 @objectnames VecZ2 = UFC{2, 1, 0, 1, 0} _0 _1
 @objectnames VecZ2ω = UFC{2, 1, 0, 1, 1} _0 _1
-@objectnames Fib_fusion = UFC{2, 1, 0, 1, 1} I τ
-@objectnames RepS3_fusion = UFC{3, 1, 0, 2, 0} I a b σ # How to understand UFC{3, 1, 0, 2, 1} and UFC{3, 1, 0, 2, 2}? They have the same fusion rule as RepS3, but different associator. They are not braided, thus cannot be viewed as RepS3 with different braiding.
+@objectnames Fibfusion = UFC{2, 1, 0, 2, 0} I τ
+@objectnames Ising3fusion = UFC{3, 1, 0, 1, 0} I ψ σ
+@objectnames Isingfusion = UFC{3, 1, 0, 1, 1} I ψ σ
+@objectnames RepS3fusion = UFC{3, 1, 0, 2, 0} I ω σ # How to understand UFC{3, 1, 0, 2, 1} and UFC{3, 1, 0, 2, 2}? They have the same fusion rule as RepS3, but different associator. They are not braided, thus cannot be viewed as RepS3 with different braiding.
 @objectnames VecZ3 = UFC{3, 1, 2, 1, 0} _0 _1 _2
 @objectnames VecZ3ω_1 = UFC{3, 1, 2, 1, 1} _0 _1 _2
 @objectnames VecZ3ω_2 = UFC{3, 1, 2, 1, 2} _0 _1 _2
-@objectnames PSU2_5_fusion = UFC{3, 1, 0, 3, 0} _0 _4 _2
+@objectnames PSU2_5fusion = UFC{3, 1, 0, 3, 0} _0 _4 _2
 
 @objectnames VecZ2xZ2 = UFC{4, 1, 0, 1, 0} I a b c
 @objectnames VecZ2ωxVecZ2ω = UFC{4, 1, 0, 1, 1} I a b c
 @objectnames FibxVecZ2 = UFC{4, 1, 0, 2, 0} I0 I1 τ1 τ0
 @objectnames FibxVecZ2ω = UFC{4, 1, 0, 2, 1} I0 I1 τ1 τ0
-@objectnames RepD5_fusion = UFC{4, 1, 0, 3, 0} I a σ1 σ2 # How to understand UFC{4, 1, 0, 3, 1} and UFC{4, 1, 0, 3, 2}? It has the same fusion rule as RepD5, but different associator. It is not braided, thus cannot be viewed as RepD5 with different braiding.
-@objectnames PSU2_6_fusion = UFC{4, 1, 0, 4, 0} _0 _2 _4 _6
-@objectnames FibFib_fusion = UFC{4, 1, 0, 5, 0} II τI Iτ ττ
-@objectnames PSU2_7_fusion = UFC{4, 1, 0, 6, 0} _0 _2 _4 _6
+@objectnames RepD5fusion = UFC{4, 1, 0, 3, 0} I a σ1 σ2 # How to understand UFC{4, 1, 0, 3, 1} and UFC{4, 1, 0, 3, 2}? It has the same fusion rule as RepD5, but different associator. It is not braided, thus cannot be viewed as RepD5 with different braiding.
+@objectnames PSU2_6fusion = UFC{4, 1, 0, 4, 0} _0 _2 _4 _6
+@objectnames FibFibfusion = UFC{4, 1, 0, 5, 0} II τI Iτ ττ
+@objectnames PSU2_7fusion = UFC{4, 1, 0, 6, 0} _0 _2 _4 _6
 @objectnames VecZ4 = UFC{4, 1, 2, 1, 0} _0 _2 _1 _3
 @objectnames VecZ4ω1 = UFC{4, 1, 2, 1, 1} _0 _2 _1 _3
 @objectnames VecZ4ω2 = UFC{4, 1, 2, 1, 2} _0 _2 _1 _3
@@ -66,12 +68,12 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames TYZ3_4 = UFC{4, 1, 2, 2, 3} _0 _1 _2 σ # TY needs further identifications
 # How to understand UFC{4, 1, 2, 4, 0} and UFC{4, 1, 2, 4, 1}? dims: 1, 1, 1 + √2, 1 + √2
 
-@objectnames SU2_4_fusion = UFC{5, 1, 0, 3, 0} _0 _4 _3 _1 _2
-@objectnames JK4_fusion = UFC{5, 1, 0, 3, 1} _0 _4 _3 _1 _2
-@objectnames RepD7_fusion = UFC{5, 1, 0, 4, 0} I a _16 _25 _34 # Needs further test fusion rule. How to understand UFC{5, 1, 0, 4, 1}? It has the same fusion rule as RepD7, but different associator. It is not braided, thus cannot be viewed as RepD7 with different braiding.
-@objectnames RepS4_fusion = UFC{5, 1, 0, 6, 1} I a b σ τ # Needs further test fusion rule. How to understand UFC{5, 1, 0, 6, 0}? It has the same fusion rule as RepS4, but different associator. It is not braided, thus cannot be viewed as RepS4 with different braiding.
-@objectnames PSU2_8_fusion = UFC{5, 1, 0, 7, 0} _0 _8 _2 _6 _4
-@objectnames PSU2_9_fusion = UFC{5, 1, 0, 10, 0} _0 _8 _2 _6 _4
+@objectnames SU2_4fusion = UFC{5, 1, 0, 3, 0} _0 _4 _3 _1 _2
+@objectnames JK4fusion = UFC{5, 1, 0, 3, 1} _0 _4 _3 _1 _2
+@objectnames RepD7fusion = UFC{5, 1, 0, 4, 0} I a _16 _25 _34 # Needs further test fusion rule. How to understand UFC{5, 1, 0, 4, 1}? It has the same fusion rule as RepD7, but different associator. It is not braided, thus cannot be viewed as RepD7 with different braiding.
+@objectnames RepS4fusion = UFC{5, 1, 0, 6, 1} I a b σ τ # Needs further test fusion rule. How to understand UFC{5, 1, 0, 6, 0}? It has the same fusion rule as RepS4, but different associator. It is not braided, thus cannot be viewed as RepS4 with different braiding.
+@objectnames PSU2_8fusion = UFC{5, 1, 0, 7, 0} _0 _8 _2 _6 _4
+@objectnames PSU2_9fusion = UFC{5, 1, 0, 10, 0} _0 _8 _2 _6 _4
 @objectnames TYZ4_1 = UFC{5, 1, 2, 1, 0} _0 _1 _2 _3 σ # TY needs further identifications
 @objectnames TYZ4_2 = UFC{5, 1, 2, 1, 1} _0 _1 _2 _3 σ # TY needs further identifications
 @objectnames TYZ4_3 = UFC{5, 1, 2, 1, 2} _0 _1 _2 _3 σ # TY needs further identifications
@@ -81,7 +83,7 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames VecZ5 = UFC{5, 1, 4, 1, 0} _0 _1 _4 _3 _2
 @objectnames VecZ5ω_1 = UFC{5, 1, 4, 1, 1} _0 _1 _4 _3 _2
 @objectnames VecZ5ω_2 = UFC{5, 1, 4, 1, 2} _0 _1 _4 _3 _2
-@objectnames PSU2_9_fusion = UFC{5, 1, 0, 10, 0} _0 _8 _2 _6 _4
+@objectnames PSU2_9fusion = UFC{5, 1, 0, 10, 0} _0 _8 _2 _6 _4
 
 # Varia
 # Notation: 𝒞⁻: braided reversed of 𝒞; 𝒞ᴳG: G-equivariantization of 𝒞. There may exist several inequivalent equivariantiazations. We use numbers to indicate them.
