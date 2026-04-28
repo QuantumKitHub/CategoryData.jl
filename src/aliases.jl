@@ -39,17 +39,21 @@ const VecS3 = VecD3
 Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames ZVecS3 = ZVecS3 A B C F G H D E
 
+# ------- Fusion ctegories -------
+# --- rank 2 ---
 @objectnames VecZ2 = UFC{2, 1, 0, 1, 0} _0 _1
 @objectnames VecZ2ω = UFC{2, 1, 0, 1, 1} _0 _1
 @objectnames Fibfusion = UFC{2, 1, 0, 2, 0} I τ
+
+# --- rank 3 ---
 @objectnames Isingϰfusion = UFC{3, 1, 0, 1, 0} I ψ σ # Ising-type UFC with ϰ(σ) = -1
 @objectnames Isingfusion = UFC{3, 1, 0, 1, 1} I ψ σ
-@objectnames RepS3fusion = UFC{3, 1, 0, 2, 0} I ω σ # How to understand UFC{3, 1, 0, 2, 1} and UFC{3, 1, 0, 2, 2}? They have the same fusion rule as RepS3, but different associator. They are not braided, thus cannot be viewed as RepS3 with different braiding.
-@objectnames VecZ3 = UFC{3, 1, 2, 1, 0} _0 _1 _2
+@objectnames RepS3fusion = UFC{3, 1, 0, 2, 0} I ω σ # How to understand UFC{3, 1, 0, 2, 1} and UFC{3, 1, 0, 2, 2}? They have the same fusion rule as RepS3, but different associator. Might be ℤ₂-equivariantization of VecZ3ω_1 and VecZ3ω_2, respectively.
 @objectnames VecZ3ω_1 = UFC{3, 1, 2, 1, 1} _0 _1 _2
 @objectnames VecZ3ω_2 = UFC{3, 1, 2, 1, 2} _0 _1 _2
 @objectnames PSU2_5fusion = UFC{3, 1, 0, 3, 0} _0 _4 _2
 
+# --- rank 4 ---
 @objectnames VecZ2xZ2 = UFC{4, 1, 0, 1, 0} I a b c
 @objectnames VecZ2ωxVecZ2ω = UFC{4, 1, 0, 1, 1} I a b c
 @objectnames FibxVecZ2 = UFC{4, 1, 0, 2, 0} I0 I1 τ1 τ0
@@ -68,6 +72,7 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames TYZ3_2ϰ = UFC{4, 1, 2, 2, 2} _0 _1 _2 σ # χ(a, b) = exp(4 π 𝕚 / 3 a b), ϰ(σ) = -1
 # How to understand UFC{4, 1, 2, 4, 0} and UFC{4, 1, 2, 4, 1}? dims: 1, 1, 1 + √2, 1 + √2
 
+# --- rank 5 ---
 @objectnames SU2_4fusion = UFC{5, 1, 0, 3, 0} _0 _4 _3 _1 _2
 @objectnames JK4fusion = UFC{5, 1, 0, 3, 1} _0 _4 _3 _1 _2
 @objectnames RepD7fusion = UFC{5, 1, 0, 4, 0} I a _16 _25 _34 # Needs further test fusion rule. How to understand UFC{5, 1, 0, 4, 1}? It has the same fusion rule as RepD7, but different associator. It is not braided, thus cannot be viewed as RepD7 with different braiding.

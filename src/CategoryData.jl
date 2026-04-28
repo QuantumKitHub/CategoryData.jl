@@ -8,6 +8,7 @@ using Tar, Inflate, SHA
 using TensorKitSectors
 using TensorKitSectors: SectorValues
 using TensorKitSectors: SimpleFusion, GenericFusion, Anyonic, NoBraiding
+using LinearAlgebra
 
 using SparseArrayKit
 
@@ -25,7 +26,7 @@ export Z5MTC_0, Z5MTC_4, SU2_4, JK4⁻, PSU2_8, PSU2_8⁻, PSU2_9, PSU2_9⁻, U1
 export SU2_5, SU2_5⁻, PSU2_10, PSU2_10⁻, PSU2_11, PSU2_11⁻, Kitaev16_8ᴳS3
 export Kitaev16_6, Kitaev16_6⁻
 export Object
-export multiplicity, rank, algebraic_structure, selfduality
+export multiplicity, rank, algebraic_structure, selfduality, FPdim
 export S, D, Ƶ
 export @objectnames
 
