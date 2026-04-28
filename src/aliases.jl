@@ -39,6 +39,29 @@ const VecS3 = VecD3
 Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames ZVecS3 = ZVecS3 A B C F G H D E
 
+# Varia
+
+# ------- Fusion rings -------
+
+@objectnames Z2group = FR{2, 1, 0, 1} _0 _1
+@objectnames Fibring = FR{2, 1, 0, 2} I τ
+
+@objectnames Isingring = FR{3, 1, 0, 1} I ψ σ
+@objectnames RepS3ring = FR{3, 1, 0, 2} I ω σ
+@objectnames PSU2_5ring = FR{3, 1, 0, 3} _0 _4 _2
+@objectnames Z3group = FR{3, 1, 2, 1} _0 _1 _2
+
+@objectnames Z2xZ2group = FR{4, 1, 0, 1} I a b c
+@objectnames FibxZ2ring = FR{4, 1, 0, 2} I0 I1 τ1 τ0
+@objectnames RepD5ring = FR{4, 1, 0, 3} _0I _0E _14 _23
+@objectnames PSU2_6ring = FR{4, 1, 0, 4} _0 _6 _4 _2
+@objectnames FibxFibring = FR{4, 1, 0, 5} II τI Iτ ττ
+@objectnames PSU2_7ring = FR{4, 1, 0, 6} _0 _6 _2 _4
+@objectnames Z4group = FR{4, 1, 2, 1} _0 _2 _1 _3
+@objectnames TYZ3ring = FR{4, 1, 2, 2} _0 _1 _2 σ
+# How to understand FR{4, 1, 2, 4}?
+@objectnames H1ring = FR{4, 2, 0, 1} I μ η ν
+
 # ------- Fusion ctegories -------
 # --- rank 2 ---
 @objectnames VecZ2 = UFC{2, 1, 0, 1, 0} _0 _1
@@ -59,9 +82,9 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames FibxVecZ2 = UFC{4, 1, 0, 2, 0} I0 I1 τ1 τ0
 @objectnames FibxVecZ2ω = UFC{4, 1, 0, 2, 1} I0 I1 τ1 τ0
 @objectnames RepD5fusion = UFC{4, 1, 0, 3, 0} I a σ1 σ2 # How to understand UFC{4, 1, 0, 3, 1} and UFC{4, 1, 0, 3, 2}? It has the same fusion rule as RepD5, but different associator. It is not braided, thus cannot be viewed as RepD5 with different braiding.
-@objectnames PSU2_6fusion = UFC{4, 1, 0, 4, 0} _0 _2 _4 _6
-@objectnames FibFibfusion = UFC{4, 1, 0, 5, 0} II τI Iτ ττ
-@objectnames PSU2_7fusion = UFC{4, 1, 0, 6, 0} _0 _2 _4 _6
+@objectnames PSU2_6fusion = UFC{4, 1, 0, 4, 0} _0 _6 _4 _2
+@objectnames FibxFibfusion = UFC{4, 1, 0, 5, 0} II τI Iτ ττ
+@objectnames PSU2_7fusion = UFC{4, 1, 0, 6, 0} _0 _6 _2 _4
 @objectnames VecZ4 = UFC{4, 1, 2, 1, 0} _0 _2 _1 _3
 @objectnames VecZ4ω1 = UFC{4, 1, 2, 1, 1} _0 _2 _1 _3
 @objectnames VecZ4ω2 = UFC{4, 1, 2, 1, 2} _0 _2 _1 _3
@@ -81,8 +104,8 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames PSU2_9fusion = UFC{5, 1, 0, 10, 0} _0 _8 _2 _6 _4
 @objectnames TYZ4_1 = UFC{5, 1, 2, 1, 0} _0 _2 _1 _3 σ # χ(a, b) = exp(2 π 𝕚 / 4 a b), ϰ(σ) = 1
 @objectnames TYZ4_1ϰ = UFC{5, 1, 2, 1, 1} _0 _2 _1 _3 σ # χ(a, b) = exp(2 π 𝕚 / 4 a b), ϰ(σ) = -1
-@objectnames TYZ4_2 = UFC{5, 1, 2, 1, 2} _0 _2 _1 _3 σ # χ(a, b) = exp(6 π 𝕚 / 4 a b), ϰ(σ) = 1
-@objectnames TYZ4_2ϰ = UFC{5, 1, 2, 1, 3} _0 _2 _1 _3 σ # χ(a, b) = exp(6 π 𝕚 / 4 a b), ϰ(σ) = -1
+@objectnames TYZ4_3 = UFC{5, 1, 2, 1, 2} _0 _2 _1 _3 σ # χ(a, b) = exp(6 π 𝕚 / 4 a b), ϰ(σ) = 1
+@objectnames TYZ4_3ϰ = UFC{5, 1, 2, 1, 3} _0 _2 _1 _3 σ # χ(a, b) = exp(6 π 𝕚 / 4 a b), ϰ(σ) = -1
 # How to understand UFC{5, 1, 2, 3, 0} and UFC{5, 1, 2, 3, 1}? dims: 1, 1, √3, √3, 2. Same set of qdims as SU2_4, but different duality structure. Perhaps some ℤ₂-equivariantization of TYZ3's.
 # How to understand UFC{5, 1, 2, 4, 0} and UFC{5, 1, 2, 4, 1}? dims: 1, 1, 2, 3, 3. Same set of qdims as RepS4, but different duality structure. Perhaps also S₃-equivariantization of some other VecZ2xZ2ω
 @objectnames VecZ5 = UFC{5, 1, 4, 1, 0} _0 _1 _4 _3 _2
@@ -90,7 +113,7 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames VecZ5ω_2 = UFC{5, 1, 4, 1, 2} _0 _1 _4 _3 _2
 @objectnames PSU2_9fusion = UFC{5, 1, 0, 10, 0} _0 _8 _2 _6 _4
 
-# Varia
+# ------- Braided categories -------
 # Notation: 𝒞⁻: braided reversed of 𝒞; 𝒞ᴳG: G-equivariantization of 𝒞. There may exist several inequivalent equivariantiazations. We use numbers to indicate them.
 @objectnames Fib⁻ = PMFC{2, 1, 0, 2, 0, 0} I τ
 @objectnames Fib = PMFC{2, 1, 0, 2, 0, 1} I τ
@@ -111,46 +134,46 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 
 @objectnames sVecZ2 = PMFC{4, 1, 0, 1, 0, 1} I0 I1 ψ0 ψ1 # Non-modular
 @objectnames ToricCode = PMFC{4, 1, 0, 1, 0, 2} I e m ψ
-@objectnames SemionSemion = PMFC{4, 1, 0, 1, 1, 1} II ϵI ϵϵ Iϵ
-# @objectnames Semion⁻Semion⁻ = PMFC{4, 1, 0, 1, 1, :?} II ϵI ϵϵ Iϵ
+@objectnames SemionxSemion = PMFC{4, 1, 0, 1, 1, 1} II ϵI ϵϵ Iϵ
+# @objectnames Semion⁻xSemion⁻ = PMFC{4, 1, 0, 1, 1, :?} II ϵI ϵϵ Iϵ
 @objectnames ZSemion = PMFC{4, 1, 0, 1, 1, 0} II ϵI ϵϵ Iϵ
-@objectnames sVecSemion = PMFC{4, 1, 0, 1, 1, 2} II Iϵ ψI ψϵ # Non-modular
+@objectnames sVecxSemion = PMFC{4, 1, 0, 1, 1, 2} II Iϵ ψI ψϵ # Non-modular
 @objectnames U1_4 = PMFC{4, 1, 2, 1, 2, 0} _0 _2 _1 _3
 @objectnames U1_4⁻ = PMFC{4, 1, 2, 1, 2, 3} _0 _2 _1 _3
 @objectnames sRepZ4 = PMFC{4, 1, 2, 1, 0, 2} _0 _2 _1 _3 # Non-modular
-@objectnames SemionZ2_twist = PMFC{4, 1, 2, 1, 0, 1} _0 _2 _1 _3 # Non-modular, twisted Z2-equivariantization of Semion, see Proposition 4.26 and Corollary 4.31 of https://arxiv.org/pdf/0906.0620, and table XXI of https://arxiv.org/pdf/1602.05946
-@objectnames SemionZ2_twist⁻ = PMFC{4, 1, 2, 1, 0, 3} _0 _2 _1 _3 # Non-modular
-@objectnames SemionFib = PMFC{4, 1, 0, 2, 1, 1} II ϵI ϵτ Iτ
-@objectnames Semion⁻Fib = PMFC{4, 1, 0, 2, 1, 3} II ϵI ϵτ Iτ
-@objectnames SemionFib⁻ = PMFC{4, 1, 0, 2, 1, 0} II ϵI ϵτ Iτ
-@objectnames Semion⁻Fib⁻ = PMFC{4, 1, 0, 2, 1, 2} II ϵI ϵτ Iτ
-@objectnames FibZ2 = PMFC{4, 1, 0, 2, 0, 2} I0 I1 τ1 τ0 # Non-modular.
-@objectnames Fib⁻Z2 = PMFC{4, 1, 0, 2, 0, 0} I0 I1 τ1 τ0
-@objectnames sVecFib = PMFC{4, 1, 0, 2, 0, 1} II ψI Iτ ψτ # Non-modular.
-@objectnames sVecFib⁻ = PMFC{4, 1, 0, 2, 0, 3} II ψI Iτ ψτ # Non-modular.
+@objectnames SemionxZ2_twist = PMFC{4, 1, 2, 1, 0, 1} _0 _2 _1 _3 # Non-modular, twisted Z2-equivariantization of Semion, see Proposition 4.26 and Corollary 4.31 of https://arxiv.org/pdf/0906.0620, and table XXI of https://arxiv.org/pdf/1602.05946
+@objectnames SemionxZ2_twist⁻ = PMFC{4, 1, 2, 1, 0, 3} _0 _2 _1 _3 # Non-modular
+@objectnames SemionxFib = PMFC{4, 1, 0, 2, 1, 1} II ϵI ϵτ Iτ
+@objectnames Semion⁻xFib = PMFC{4, 1, 0, 2, 1, 3} II ϵI ϵτ Iτ
+@objectnames SemionxFib⁻ = PMFC{4, 1, 0, 2, 1, 0} II ϵI ϵτ Iτ
+@objectnames Semion⁻xFib⁻ = PMFC{4, 1, 0, 2, 1, 2} II ϵI ϵτ Iτ
+@objectnames FibxZ2 = PMFC{4, 1, 0, 2, 0, 2} I0 I1 τ1 τ0 # Non-modular.
+@objectnames Fib⁻xZ2 = PMFC{4, 1, 0, 2, 0, 0} I0 I1 τ1 τ0
+@objectnames sVecxFib = PMFC{4, 1, 0, 2, 0, 1} II ψI Iτ ψτ # Non-modular.
+@objectnames sVecxFib⁻ = PMFC{4, 1, 0, 2, 0, 3} II ψI Iτ ψτ # Non-modular.
 # @objectnames FibFib = PMFC{4, 1, 0, 5, 0, :?} II τI Iτ ττ
-@objectnames Fib⁻Fib⁻ = PMFC{4, 1, 0, 5, 0, 0} II τI Iτ ττ
+@objectnames Fib⁻xFib⁻ = PMFC{4, 1, 0, 5, 0, 0} II τI Iτ ττ
 @objectnames ZFib = PMFC{4, 1, 0, 5, 0, 1} II τI Iτ ττ
-@objectnames Z5MTC_0ᴳZ2 = PMFC{4, 1, 0, 3, 0, 1} _0I _0E _14 _23 # Z2-equivariantization of Z5MTC_0, see table XXI of https://arxiv.org/pdf/1602.05946
-@objectnames Z5MTC_4ᴳZ2 = PMFC{4, 1, 0, 3, 0, 2} _0I _0E _14 _23 # Z2-equivariantization of Z5MTC_4, see table XXI of https://arxiv.org/pdf/1602.05946
+@objectnames Z5MTC_0ᴳZ2 = PMFC{4, 1, 0, 3, 0, 1} _0I _0E _14 _23 # swapping 1 and 4, 2 and 3 in the Z5MTC_0, see table XXI of https://arxiv.org/pdf/1602.05946
+@objectnames Z5MTC_4ᴳZ2 = PMFC{4, 1, 0, 3, 0, 2} _0I _0E _14 _23 # swapping 1 and 4, 2 and 3 in the Z5MTC_4, see table XXI of https://arxiv.org/pdf/1602.05946
 # One missing: Z3-equivariantization of the three-fermion MTC, see table XXIV of https://arxiv.org/pdf/1602.05946, shares the same fusion rule as RepA4.
 
 @objectnames Z5MTC_0 = PMFC{5, 1, 4, 1, 0, 2} _0 _1 _4 _3 _2
 @objectnames Z5MTC_4 = PMFC{5, 1, 4, 1, 0, 1} _0 _1 _4 _3 _2
 @objectnames JK4⁻ = PMFC{5, 1, 0, 3, 1, 0} _0 _4 _3 _1 _2
-@objectnames U1_4ᴳ¹Z2 = PMFC{5, 1, 0, 1, 0, 0} _0I _0E _2I _2E _13
+@objectnames U1_4ᴳ¹Z2 = PMFC{5, 1, 0, 1, 0, 0} _0I _0E _2I _2E _13 # swapping 1 and 3 in the U1_4 MTC
 @objectnames U1_4ᴳ¹Z2⁻ = PMFC{5, 1, 0, 1, 0, 3} _0I _0E _2I _2E _13
-@objectnames SemionSemionᴳZ2 = PMFC{5, 1, 0, 1, 0, 1} III IIE ϵϵI ϵϵE ϵIIϵ
-@objectnames SemionSemionᴳZ2⁻ = PMFC{5, 1, 0, 1, 0, 2} III IIE ϵϵI ϵϵE ϵIIϵ
-@objectnames Kitaev16_6ᴳ¹Z2⁻ = PMFC{5, 1, 0, 1, 0, 4} _0I _0E _2I _2E _13
-@objectnames U1_4ᴳ²Z2⁻ = PMFC{5, 1, 0, 1, 1, 0} _0I _0E _2I _2E _13
-@objectnames ToricCodeᴳZ2 = PMFC{5, 1, 0, 1, 1, 1} II IE ψI ψE em
-@objectnames Kitaev16_8ᴳZ2 = PMFC{5, 1, 0, 1, 1, 2} II IE ψI ψE em
-@objectnames Kitaev16_6ᴳ²Z2 = PMFC{5, 1, 0, 1, 1, 4} _0I _0E _2I _2E _13
-@objectnames Kitaev16_6ᴳ²Z2⁻ = PMFC{5, 1, 0, 1, 1, 3} _0I _0E _2I _2E _13
+@objectnames SemionxSemionᴳZ2 = PMFC{5, 1, 0, 1, 0, 1} III IIE ϵϵI ϵϵE ϵIIϵ # swapping two semions in different layers
+@objectnames SemionxSemionᴳZ2⁻ = PMFC{5, 1, 0, 1, 0, 2} III IIE ϵϵI ϵϵE ϵIIϵ
+@objectnames Kitaev16_6ᴳ¹Z2⁻ = PMFC{5, 1, 0, 1, 0, 4} _0I _0E _2I _2E _13 # swapping 1 and 3 in the Kitaev16_6 MTC
+@objectnames U1_4ᴳ²Z2⁻ = PMFC{5, 1, 0, 1, 1, 0} _0I _0E _2I _2E _13 # swapping 1 and 3 in the U1_4 MTC
+@objectnames ToricCodeᴳZ2 = PMFC{5, 1, 0, 1, 1, 1} II IE ψI ψE em # swapping e and m in the toric code MTC
+@objectnames Kitaev16_8ᴳZ2 = PMFC{5, 1, 0, 1, 1, 2} II IE ψI ψE em # swapping e and m in the three-fermion MTC
+@objectnames Kitaev16_6ᴳ²Z2 = PMFC{5, 1, 0, 1, 1, 4} _0I _0E _2I _2E _13 # swapping 1 and 3 in the Kitaev16_6 MTC, different actions
+@objectnames Kitaev16_6ᴳ²Z2⁻ = PMFC{5, 1, 0, 1, 1, 3} _0I _0E _2I _2E _13 # swapping 1 and 3 in the Kitaev16_6 MTC, different actions
 @objectnames SemionᴳZ2xZ2 = PMFC{5, 1, 0, 1, 2, 0} I a b c σ # Already RepQ8 as fusion category. One only need to add its trivial braiding solution.
-@objectnames Z7MTCᴳZ2 = PMFC{5, 1, 0, 4, 0, 1} _0I _0E _25 _16 _34
-@objectnames Kitaev16_8ᴳS3 = PMFC{5, 1, 0, 6, 0, 0} I a b σ τ # S₃-equivariantization of the three-fermion UMTC, see table XXV and XXVI of https://arxiv.org/pdf/1602.05946. Share the same fusion rule as RepS4.
+@objectnames Z7MTCᴳZ2 = PMFC{5, 1, 0, 4, 0, 1} _0I _0E _25 _16 _34 # swapping 1 and 6, 2 and 5, 3 and 4 in the Z7MTC
+@objectnames Kitaev16_8ᴳS3 = PMFC{5, 1, 0, 6, 0, 0} I a b σ τ # swapping three fermions in the Kitaev16_8 MTC, see table XXV and XXVI of https://arxiv.org/pdf/1602.05946. Share the same fusion rule as RepS4.
 
 # --- SU2 ---
 # @objectnames SU2_1 = PMFC{2, 1, 0, 1, 1, 0} _0 _1 # Already defined in Semion
