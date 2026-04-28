@@ -42,7 +42,7 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames VecZ2 = UFC{2, 1, 0, 1, 0} _0 _1
 @objectnames VecZ2ω = UFC{2, 1, 0, 1, 1} _0 _1
 @objectnames Fibfusion = UFC{2, 1, 0, 2, 0} I τ
-@objectnames Ising3fusion = UFC{3, 1, 0, 1, 0} I ψ σ
+@objectnames Isingϰfusion = UFC{3, 1, 0, 1, 0} I ψ σ # Ising-type UFC with ϰ(σ) = -1
 @objectnames Isingfusion = UFC{3, 1, 0, 1, 1} I ψ σ
 @objectnames RepS3fusion = UFC{3, 1, 0, 2, 0} I ω σ # How to understand UFC{3, 1, 0, 2, 1} and UFC{3, 1, 0, 2, 2}? They have the same fusion rule as RepS3, but different associator. They are not braided, thus cannot be viewed as RepS3 with different braiding.
 @objectnames VecZ3 = UFC{3, 1, 2, 1, 0} _0 _1 _2
@@ -62,10 +62,10 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames VecZ4ω1 = UFC{4, 1, 2, 1, 1} _0 _2 _1 _3
 @objectnames VecZ4ω2 = UFC{4, 1, 2, 1, 2} _0 _2 _1 _3
 @objectnames VecZ4ω3 = UFC{4, 1, 2, 1, 3} _0 _2 _1 _3
-@objectnames TYZ3_1 = UFC{4, 1, 2, 2, 0} _0 _1 _2 σ # TY needs further identifications
-@objectnames TYZ3_2 = UFC{4, 1, 2, 2, 1} _0 _1 _2 σ # TY needs further identifications
-@objectnames TYZ3_3 = UFC{4, 1, 2, 2, 2} _0 _1 _2 σ # TY needs further identifications
-@objectnames TYZ3_4 = UFC{4, 1, 2, 2, 3} _0 _1 _2 σ # TY needs further identifications
+@objectnames TYZ3_1 = UFC{4, 1, 2, 2, 0} _0 _1 _2 σ # χ(a, b) = exp(2 π 𝕚 / 3 a b), ϰ(σ) = 1
+@objectnames TYZ3_1ϰ = UFC{4, 1, 2, 2, 3} _0 _1 _2 σ # χ(a, b) = exp(2 π 𝕚 / 3 a b), ϰ(σ) = -1
+@objectnames TYZ3_2 = UFC{4, 1, 2, 2, 1} _0 _1 _2 σ # χ(a, b) = exp(4 π 𝕚 / 3 a b), ϰ(σ) = 1
+@objectnames TYZ3_2ϰ = UFC{4, 1, 2, 2, 2} _0 _1 _2 σ # χ(a, b) = exp(4 π 𝕚 / 3 a b), ϰ(σ) = -1
 # How to understand UFC{4, 1, 2, 4, 0} and UFC{4, 1, 2, 4, 1}? dims: 1, 1, 1 + √2, 1 + √2
 
 @objectnames SU2_4fusion = UFC{5, 1, 0, 3, 0} _0 _4 _3 _1 _2
@@ -74,10 +74,10 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames RepS4fusion = UFC{5, 1, 0, 6, 1} I a b σ τ # Needs further test fusion rule. How to understand UFC{5, 1, 0, 6, 0}? It has the same fusion rule as RepS4, but different associator. It is not braided, thus cannot be viewed as RepS4 with different braiding.
 @objectnames PSU2_8fusion = UFC{5, 1, 0, 7, 0} _0 _8 _2 _6 _4
 @objectnames PSU2_9fusion = UFC{5, 1, 0, 10, 0} _0 _8 _2 _6 _4
-@objectnames TYZ4_1 = UFC{5, 1, 2, 1, 0} _0 _1 _2 _3 σ # TY needs further identifications
-@objectnames TYZ4_2 = UFC{5, 1, 2, 1, 1} _0 _1 _2 _3 σ # TY needs further identifications
-@objectnames TYZ4_3 = UFC{5, 1, 2, 1, 2} _0 _1 _2 _3 σ # TY needs further identifications
-@objectnames TYZ4_4 = UFC{5, 1, 2, 1, 3} _0 _1 _2 _3 σ # TY needs further identifications
+@objectnames TYZ4_1 = UFC{5, 1, 2, 1, 0} _0 _2 _1 _3 σ # χ(a, b) = exp(2 π 𝕚 / 4 a b), ϰ(σ) = 1
+@objectnames TYZ4_1ϰ = UFC{5, 1, 2, 1, 1} _0 _2 _1 _3 σ # χ(a, b) = exp(2 π 𝕚 / 4 a b), ϰ(σ) = -1
+@objectnames TYZ4_2 = UFC{5, 1, 2, 1, 2} _0 _2 _1 _3 σ # χ(a, b) = exp(6 π 𝕚 / 4 a b), ϰ(σ) = 1
+@objectnames TYZ4_2ϰ = UFC{5, 1, 2, 1, 3} _0 _2 _1 _3 σ # χ(a, b) = exp(6 π 𝕚 / 4 a b), ϰ(σ) = -1
 # How to understand UFC{5, 1, 2, 3, 0} and UFC{5, 1, 2, 3, 1}? dims: 1, 1, √3, √3, 2. Same set of qdims as SU2_4, but different duality structure. Perhaps some ℤ₂-equivariantization of TYZ3's.
 # How to understand UFC{5, 1, 2, 4, 0} and UFC{5, 1, 2, 4, 1}? dims: 1, 1, 2, 3, 3. Same set of qdims as RepS4, but different duality structure. Perhaps also S₃-equivariantization of some other VecZ2xZ2ω
 @objectnames VecZ5 = UFC{5, 1, 4, 1, 0} _0 _1 _4 _3 _2
