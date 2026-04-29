@@ -62,6 +62,16 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 # How to understand FR{4, 1, 2, 4}?
 @objectnames H1ring = FR{4, 2, 0, 1} I μ η ν
 
+@objectnames TYZ2xZ2ring = FR{5, 1, 0, 1} I a b c σ
+@objectnames SU2_4ring = FR{5, 1, 0, 3} _0 _4 _3 _1 _2
+@objectnames RepD7ring = FR{5, 1, 0, 4} I a _16 _25 _34
+@objectnames RepS4ring = FR{5, 1, 0, 6} I a b σ τ
+@objectnames PSU2_8ring = FR{5, 1, 0, 7} _0 _8 _2 _6 _4
+# How to understand the fusion ring FR{5, 1, 2, 3}? Have the same FPdims as SU2_4.
+# How to understand the fusion ring FR{5, 1, 2, 4}? Have the same FPdims as RepS4.
+@objectnames Z5ring = FR{5, 1, 4, 1} _0 _1 _4 _3 _2
+@objectnames PSU2_9ring = FR{5, 1, 0, 10} _0 _8 _2 _6 _4
+
 # ------- Fusion ctegories -------
 # --- rank 2 ---
 @objectnames VecZ2 = UFC{2, 1, 0, 1, 0} _0 _1
@@ -175,13 +185,51 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames Z7MTCᴳZ2 = PMFC{5, 1, 0, 4, 0, 1} _0I _0E _25 _16 _34 # swapping 1 and 6, 2 and 5, 3 and 4 in the Z7MTC
 @objectnames Kitaev16_8ᴳS3 = PMFC{5, 1, 0, 6, 0, 0} I a b σ τ # swapping three fermions in the Kitaev16_8 MTC, see table XXV and XXVI of https://arxiv.org/pdf/1602.05946. Share the same fusion rule as RepS4.
 
+@objectnames FibxPSU2_5⁻ = PMFC{6, 1, 0, 14, 0, 0} II τI I4 I2 τ4 τ2
+@objectnames FibxPSU2_5 = PMFC{6, 1, 0, 14, 0, 1} II τI I4 I2 τ4 τ2
+@objectnames Fib⁻xPSU2_5⁻ = PMFC{6, 1, 0, 14, 0, 2} II τI I4 I2 τ4 τ2
+@objectnames Fib⁻xPSU2_5 = PMFC{6, 1, 0, 14, 0, 3} II τI I4 I2 τ4 τ2
+@objectnames SemionxIsing5 = PMFC{6, 1, 0, 1, 2, 0} II ϵψ ϵI Iψ ϵσ Iσ
+@objectnames SemionxIsing = PMFC{6, 1, 0, 1, 2, 1} II ϵψ ϵI Iψ ϵσ Iσ
+@objectnames Fib⁻xIsing7⁻ = PMFC{6, 1, 0, 4, 0, 0} II Iψ Iσ τψ τI τσ
+@objectnames FibxIsing7⁻ = PMFC{6, 1, 0, 4, 0, 1} II Iψ Iσ τψ τI τσ
+@objectnames Fib⁻xIsing = PMFC{6, 1, 0, 4, 0, 2} II Iψ Iσ τψ τI τσ
+@objectnames FibxIsing = PMFC{6, 1, 0, 4, 0, 3} II Iψ Iσ τψ τI τσ
+@objectnames FibxIsing7 = PMFC{6, 1, 0, 4, 0, 4} II Iψ Iσ τψ τI τσ
+@objectnames Fib⁻xIsing7 = PMFC{6, 1, 0, 4, 0, 5} II Iψ Iσ τψ τI τσ
+@objectnames FibxIsing⁻ = PMFC{6, 1, 0, 4, 0, 6} II Iψ Iσ τψ τI τσ
+@objectnames Fib⁻xIsing⁻ = PMFC{6, 1, 0, 4, 0, 7} II Iψ Iσ τψ τI τσ
+@objectnames Fib⁻xIsing3⁻ = PMFC{6, 1, 0, 4, 1, 0} II Iψ Iσ τψ τI τσ
+@objectnames FibxIsing3⁻ = PMFC{6, 1, 0, 4, 1, 1} II Iψ Iσ τψ τI τσ
+@objectnames FibxIsing5⁻ = PMFC{6, 1, 0, 4, 1, 2} II Iψ Iσ τψ τI τσ
+@objectnames Fib⁻xIsing5⁻ = PMFC{6, 1, 0, 4, 1, 3} II Iψ Iσ τψ τI τσ
+@objectnames Fib⁻xIsing3 = PMFC{6, 1, 0, 4, 1, 4} II Iψ Iσ τψ τI τσ
+@objectnames FibxIsing3 = PMFC{6, 1, 0, 4, 1, 5} II Iψ Iσ τψ τI τσ
+@objectnames FibxIsing5 = PMFC{6, 1, 0, 4, 1, 6} II Iψ Iσ τψ τI τσ
+@objectnames Fib⁻xIsing5 = PMFC{6, 1, 0, 4, 1, 7} II Iψ Iσ τψ τI τσ
+@objectnames Semion⁻xPSU2_5 = PMFC{6, 1, 0, 6, 0, 0} II ϵI ϵ4 I2 I4 ϵ2
+@objectnames SemionxPSU2_5 = PMFC{6, 1, 0, 6, 0, 1} II ϵI ϵ4 I2 I4 ϵ2
+@objectnames SemionxPSU2_5⁻ = PMFC{6, 1, 0, 6, 0, 2} II ϵI ϵ4 I2 I4 ϵ2
+@objectnames Semion⁻xPSU2_5⁻ = PMFC{6, 1, 0, 6, 0, 3} II ϵI ϵ4 I2 I4 ϵ2
+# PMFC{6, 1, 0, 9, 0, 0}, PMFC{6, 1, 0, 9, 1, 0}, PMFC{6, 1, 0, 9, 2, 0}, PMFC{6, 1, 0, 9, 3, 0} are primitive and do not know how to understand them D² = 20. 
+# PMFC{6, 1, 0, 9, 0, 0}, PMFC{6, 1, 0, 9, 1, 0} may be Witt equivalent to Z5MTC_0, and PMFC{6, 1, 0, 9, 2, 0}, PMFC{6, 1, 0, 9, 3, 0} may be Witt equivalent to Z5MTC_4. 
+# The 2 is a ℤ₂-boson and these Witt equivalences may be realized by condensing 1 ⊕ 2.
+@objectnames Semion⁻xZ3MTC = PMFC{6, 1, 4, 1, 3, 0} _00 _10 _11 _12 _01 _02
+@objectnames Semion⁻xZ3MTC⁻ = PMFC{6, 1, 4, 1, 3, 2} _00 _10 _11 _12 _01 _02
+@objectnames SemionxZ3MTC = PMFC{6, 1, 4, 1, 3, 3} _00 _10 _11 _12 _01 _02
+@objectnames SemionxZ3MTC⁻ = PMFC{6, 1, 4, 1, 3, 5} _00 _10 _11 _12 _01 _02
+@objectnames FibxZ3MTC⁻ = PMFC{6, 1, 4, 5, 0, 1} I0 I1 I2 τ0 τ1 τ2
+@objectnames FibxZ3MTC = PMFC{6, 1, 4, 5, 0, 2} I0 I1 I2 τ0 τ1 τ2
+@objectnames Fib⁻xZ3MTC⁻ = PMFC{6, 1, 4, 5, 0, 4} I0 I1 I2 τ0 τ1 τ2
+@objectnames Fib⁻xZ3MTC = PMFC{6, 1, 4, 5, 0, 5} I0 I1 I2 τ0 τ1 τ2
+
 # --- SU2 ---
 # @objectnames SU2_1 = PMFC{2, 1, 0, 1, 1, 0} _0 _1 # Already defined in Semion
 # @objectnames SU2_2 = PMFC{3, 1, 0, 1, 0, 3} _0 _2 _1 # Already defined in Ising3
 # @objectnames SU2_3 = PMFC{4, 1, 0, 2, 1, 3} _0 _3 _1 _2 # Already defined in Semion⁻Fib
 @objectnames SU2_4 = PMFC{5, 1, 0, 3, 0, 0} _0 _4 _3 _1 _2
-@objectnames SU2_5 = PMFC{6, 1, 0, 6, 0, 1} _0 _5 _1 _4 _2 _3
-@objectnames SU2_5⁻ = PMFC{6, 1, 0, 6, 0, 3} _0 _5 _1 _4 _2 _3
+# @objectnames SU2_5 = PMFC{6, 1, 0, 6, 0, 1} _0 _5 _1 _4 _2 _3 # Already defined in SemionxPSU2_5
+# @objectnames SU2_5⁻ = PMFC{6, 1, 0, 6, 0, 3} _0 _5 _1 _4 _2 _3 # Already defined in Semion⁻xPSU2_5⁻
 
 # --- PSU2 ---
 # @objectnames PSU2_3 = PMFC{2, 1, 0, 2, 0, 0} _0 _2 # Already defined in Fib
