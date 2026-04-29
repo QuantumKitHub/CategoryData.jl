@@ -211,9 +211,10 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames SemionxPSU2_5 = PMFC{6, 1, 0, 6, 0, 1} II ϵI ϵ4 I2 I4 ϵ2
 @objectnames SemionxPSU2_5⁻ = PMFC{6, 1, 0, 6, 0, 2} II ϵI ϵ4 I2 I4 ϵ2
 @objectnames Semion⁻xPSU2_5⁻ = PMFC{6, 1, 0, 6, 0, 3} II ϵI ϵ4 I2 I4 ϵ2
-# PMFC{6, 1, 0, 9, 0, 0}, PMFC{6, 1, 0, 9, 1, 0}, PMFC{6, 1, 0, 9, 2, 0}, PMFC{6, 1, 0, 9, 3, 0} are primitive and do not know how to understand them D² = 20. 
-# PMFC{6, 1, 0, 9, 0, 0}, PMFC{6, 1, 0, 9, 1, 0} may be Witt equivalent to Z5MTC_0, and PMFC{6, 1, 0, 9, 2, 0}, PMFC{6, 1, 0, 9, 3, 0} may be Witt equivalent to Z5MTC_4. 
-# The 2 is a ℤ₂-boson and these Witt equivalences may be realized by condensing 1 ⊕ 2.
+@objectnames Z5MTC_0ᴳZ2_Mex1 = PMFC{6, 1, 0, 9, 0, 0} _0I _0E _14 _23 σ1 σ2 # Minimal modular extension of Z5MTC_0ᴳZ2, or gauging the ℤ₂ symmetry of the Z5MTC_0
+@objectnames Z5MTC_0ᴳZ2_Mex2 = PMFC{6, 1, 0, 9, 1, 0} _0I _0E _14 _23 σ1 σ2
+@objectnames Z5MTC_4ᴳZ2_Mex1 = PMFC{6, 1, 0, 9, 2, 0} _0I _0E _14 _23 σ1 σ2
+@objectnames Z5MTC_4ᴳZ2_Mex2 = PMFC{6, 1, 0, 9, 3, 0} _0I _0E _14 _23 σ1 σ2
 @objectnames Semion⁻xZ3MTC = PMFC{6, 1, 4, 1, 3, 0} _00 _10 _11 _12 _01 _02
 @objectnames Semion⁻xZ3MTC⁻ = PMFC{6, 1, 4, 1, 3, 2} _00 _10 _11 _12 _01 _02
 @objectnames SemionxZ3MTC = PMFC{6, 1, 4, 1, 3, 3} _00 _10 _11 _12 _01 _02
