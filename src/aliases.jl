@@ -67,6 +67,7 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames RepD7ring = FR{5, 1, 0, 4} I a _16 _25 _34
 @objectnames RepS4ring = FR{5, 1, 0, 6} I a b σ τ
 @objectnames PSU2_8ring = FR{5, 1, 0, 7} _0 _8 _2 _6 _4
+@objectnames TYZ4ring = FR{5, 1, 2, 1} _0 _2 _1 _3 σ
 # How to understand the fusion ring FR{5, 1, 2, 3}? Have the same FPdims as SU2_4.
 # How to understand the fusion ring FR{5, 1, 2, 4}? Have the same FPdims as RepS4.
 @objectnames Z5ring = FR{5, 1, 4, 1} _0 _1 _4 _3 _2
@@ -103,7 +104,7 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames TYZ3_1ϰ = UFC{4, 1, 2, 2, 3} _0 _1 _2 σ # χ(a, b) = exp(2 π 𝕚 / 3 a b), ϰ(σ) = -1
 @objectnames TYZ3_2 = UFC{4, 1, 2, 2, 1} _0 _1 _2 σ # χ(a, b) = exp(4 π 𝕚 / 3 a b), ϰ(σ) = 1
 @objectnames TYZ3_2ϰ = UFC{4, 1, 2, 2, 2} _0 _1 _2 σ # χ(a, b) = exp(4 π 𝕚 / 3 a b), ϰ(σ) = -1
-# How to understand UFC{4, 1, 2, 4, 0} and UFC{4, 1, 2, 4, 1}? dims: 1, 1, 1 + √2, 1 + √2
+# How to understand UFC{4, 1, 2, 4, 0} and UFC{4, 1, 2, 4, 1}? dims: 1, 1, 1 + √2, 1 + √2. Are they Morita equivalent to PSU2_6?
 
 # --- rank 5 ---
 @objectnames SU2_4fusion = UFC{5, 1, 0, 3, 0} _0 _4 _3 _1 _2
