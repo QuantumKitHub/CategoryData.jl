@@ -13,6 +13,7 @@ const RepD4 = PMFC{5, 1, 0, 1, 3, 0}
 const RepD5 = PMFC{4, 1, 0, 3, 0, 0}
 const RepD6 = PMFC{6, 1, 0, 2, 0, 0}
 const RepD7 = PMFC{5, 1, 0, 4, 0, 0}
+const RepD9 = PMFC{6, 1, 0, 8, 0, 1}
 
 # Vec[Dₙ]
 const VecD3 = UFC{6, 1, 2, 1, 0}
@@ -20,12 +21,6 @@ const VecD3 = UFC{6, 1, 2, 1, 0}
 # Rep[Sₙ]
 const RepS3 = RepD3
 const RepS4 = PMFC{5, 1, 0, 6, 1, 0}
-
-# ℤ₂ × ℤ₂ Tambara-Yamagami category, see https://doi.org/10.1006/jabr.1998.7558
-@objectnames RepD4fusion = UFC{5, 1, 0, 1, 3} I a b c σ # χ = (-1)^(g₁h₂ + g₂h₁), ϰ = 1
-@objectnames RepQ8fusion = UFC{5, 1, 0, 1, 2} I a b c σ # χ = (-1)^(g₁h₂ + g₂h₁), ϰ = -1
-@objectnames RepH8 = UFC{5, 1, 0, 1, 1} I a b c σ # χ = (-1)^(g₁h₁ + g₂h₂), ϰ = 1
-@objectnames TYℤ₂xℤ₂anomalous = UFC{5, 1, 0, 1, 0} I a b c σ # χ = (-1)^(g₁h₁ + g₂h₂), ϰ = -1
 
 # Vec[Sₙ]
 const VecS3 = VecD3
@@ -105,6 +100,11 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames TYZ3_2 = UFC{4, 1, 2, 2, 1} _0 _1 _2 σ # χ(a, b) = exp(4 π 𝕚 / 3 a b), ϰ(σ) = 1
 @objectnames TYZ3_2ϰ = UFC{4, 1, 2, 2, 2} _0 _1 _2 σ # χ(a, b) = exp(4 π 𝕚 / 3 a b), ϰ(σ) = -1
 # How to understand UFC{4, 1, 2, 4, 0} and UFC{4, 1, 2, 4, 1}? dims: 1, 1, 1 + √2, 1 + √2. Are they Morita equivalent to PSU2_6?
+# ℤ₂ × ℤ₂ Tambara-Yamagami category, see https://doi.org/10.1006/jabr.1998.7558
+@objectnames RepD4fusion = UFC{5, 1, 0, 1, 3} I a b c σ # χ = (-1)^(g₁h₂ + g₂h₁), ϰ = 1
+@objectnames RepQ8fusion = UFC{5, 1, 0, 1, 2} I a b c σ # χ = (-1)^(g₁h₂ + g₂h₁), ϰ = -1
+@objectnames RepH8 = UFC{5, 1, 0, 1, 1} I a b c σ # χ = (-1)^(g₁h₁ + g₂h₂), ϰ = 1
+@objectnames TYℤ₂xℤ₂anomalous = UFC{5, 1, 0, 1, 0} I a b c σ # χ = (-1)^(g₁h₁ + g₂h₂), ϰ = -1
 
 # --- rank 5 ---
 @objectnames SU2_4fusion = UFC{5, 1, 0, 3, 0} _0 _4 _3 _1 _2
@@ -225,6 +225,14 @@ Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
 @objectnames Fib⁻xZ3MTC⁻ = PMFC{6, 1, 4, 5, 0, 4} I0 I1 I2 τ0 τ1 τ2
 @objectnames Fib⁻xZ3MTC = PMFC{6, 1, 4, 5, 0, 5} I0 I1 I2 τ0 τ1 τ2
 
+@objectnames Ising⁻xZ2 = PMFC{6, 1, 0, 1, 0, 0} I0 ψ1 I1 ψ0 σ0 σ1 
+@objectnames Ising7xsVec = PMFC{6, 1, 0, 1, 0, 1} II Iψ ψψ ψI σI σψ # Such a factorization may not be canonical, can also be Ising⁻xsVec
+@objectnames Ising5xsVec = PMFC{6, 1, 0, 1, 1, 0} II Iψ ψψ ψI σI σψ # Such a factorization may not be canonical, can also be Ising3⁻xsVec
+@objectnames Ising5xZ2 = PMFC{6, 1, 0, 1, 1, 1} I0 ψ1 I1 ψ0 σ0 σ1 # Such a factorization may not be canonical. There is ambiguity in distinguishing σ0 and σ1.
+@objectnames sRepD6 = PMFC{6, 1, 0, 2, 0, 1} _0I _3E _3I _0E _15 _24 # Still have some problem distinguishing 3E and 3I.
+@objectnames RepD3xZ2 = PMFC{6, 1, 2, 4, 0, 0} I0 ω0 I1 ω1 σ1 σ0 # Still have some problem distringuishing I1 and ω1.
+@objectnames sVecxRepD3 = PMFC{6, 1, 2, 4, 0, 3} II Iω ψI ψω ψσ Iσ # # Still have some problem distringuishing I1 and ω1.
+@objectnames sVecxZ3 = PMFC{6, 1, 4, 1, 0, 3} I0 ψ0 ψ2 ψ1 I1 I2
 # --- SU2 ---
 # @objectnames SU2_1 = PMFC{2, 1, 0, 1, 1, 0} _0 _1 # Already defined in Semion
 # @objectnames SU2_2 = PMFC{3, 1, 0, 1, 0, 3} _0 _2 _1 # Already defined in Ising3

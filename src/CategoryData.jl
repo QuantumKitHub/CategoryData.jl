@@ -26,7 +26,7 @@ export Z2xZ2group, FibxZ2ring, RepD5ring, PSU2_6ring, FibxFibring, PSU2_7ring, Z
 export TYZ2xZ2ring, SU2_4ring, RepD7ring, RepS4ring, PSU2_8ring, TYZ4ring, Z5ring, PSU2_9ring
 
 # ------ (super) Tannakian category export ------
-export Z2, Z3, Z4, Z5, Z6, Z2xZ2, RepD3, RepD4, RepD5, RepD6, RepD7, RepA4, RepS4, sVec, sVecxZ2, sRepZ4
+export Z2, Z3, Z4, Z5, Z6, Z2xZ2, RepD3, RepD4, RepD5, RepD6, RepD7, RepD9, RepA4, RepS4, RepD3xZ2, sVec, sVecxZ2, sRepZ4, sRepD6, sVecxRepD3, sVecxZ3
 
 # ------ Fusion category export ------
 # ------ rank 2 -------
