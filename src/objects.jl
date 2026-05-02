@@ -50,3 +50,9 @@ end
 # must be integer for fusiontensor
 TensorKitSectors.dim(a::Object{RepA4}) = a.id == 4 ? 3 : 1
 TensorKitSectors.BraidingStyle(::Type{Object{RepA4}}) = TensorKitSectors.Bosonic()
+
+function FPdim(a::Object{I}) where {I <: FusionRing}
+    Nmat = [Nsymbol(a, b, c) for b in values(Object{I}), c in values(Object{I})]
+    positive_eigs = real.(filter(x -> (real(x) > 0 && imag(x) ≈ 0), eigvals(Nmat)))
+    return maximum(positive_eigs)
+end
