@@ -14,6 +14,8 @@ testsuite_path = joinpath(
 include(testsuite_path)
 using .SectorTestSuite: randsector
 
+SectorTestSuite.smallset(::Type{I}) where {I <: Object} = collect(values(I))
+
 # sector tests
 @testset "Fusion rings" begin
     include("fusionrings.jl") # custom test selection
