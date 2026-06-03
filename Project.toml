@@ -20,7 +20,7 @@ Pkg = "1"
 SHA = "0.7, 1"
 SparseArrayKit = "0.4"
 Tar = "1"
-TensorKitSectors = "0.3.8"
+TensorKitSectors = "0.3.9"
 TensorOperations = "5"
 TestExtras = "0.3"
 julia = "1.10"
@@ -33,6 +33,3 @@ TestExtras = "5ed8adda-3752-4e41-b88a-e8b09835ee3a"
 
 [targets]
 test = ["Test", "TestExtras", "LinearAlgebra", "Random"]
-
-[sources]
-TensorKitSectors = {url = "https://github.com/QuantumKitHub/TensorKitSectors.jl", rev = "bd/artin"}
