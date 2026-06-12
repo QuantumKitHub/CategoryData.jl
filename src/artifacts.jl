@@ -128,6 +128,7 @@ end
 
 const F_format = r"(?<a>\d+)\t(?<b>\d+)\t(?<c>\d+)\t(?<d>\d+)\t(?<e>\d+)\t(?<f>\d+)\t(?<re>-?\d+(\.\d+)?)\t(?<im>-?\d+(\.\d+)?)"
 
+#TODO for old data: permute columns so multiplicities come after labels
 function parse_Fsymbol(line)
     m = match(F_format, line)
     if isnothing(m)
@@ -139,12 +140,13 @@ function parse_Fsymbol(line)
 
     if length(m.captures) == 10
         a, b, c, d, e, f = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f]))
-        labels = (a, b, c, d, 1, e, 1, 1, f, 1) # manually add multiplicity labels 1 if not given
+        labels = (a, b, c, d, e, f, 1, 1, 1, 1) # manually add multiplicity labels 1 if not given
         val = complex(parse.(Float64, (m[:re], m[:im]))...)
     elseif length(m.captures) == 14
-        labels = parse.(
+        a, b, c, d, α, e, β, μ, f, ν = parse.(
             Int, (m[:a], m[:b], m[:c], m[:d], m[:α], m[:e], m[:β], m[:μ], m[:f], m[:ν])
         )
+        labels = (a, b, c, d, e, f, α, β, μ, ν)
         val = complex(parse.(Float64, (m[:re], m[:im]))...)
     else
         throw(Meta.ParseError("invalid F pattern: $m"))
@@ -161,7 +163,7 @@ function extract_Fsymbol(::Type{F}) where {F <: FusionCategory}
     if M == 1
         F_array = SparseArray{ComplexF64}(undef, (R, R, R, R, R, R))
         for line in eachline(filename)
-            a, b, c, d, α, e, β, μ, f, ν, val = parse_Fsymbol(line)
+            a, b, c, d, e, f, α, β, μ, ν, val = parse_Fsymbol(line)
             μ == ν == α == β == 1 || throw(DomainError("not multiplicity-free"))
             F_array[a, b, c, d, e, f] = val
         end
@@ -169,7 +171,7 @@ function extract_Fsymbol(::Type{F}) where {F <: FusionCategory}
     else
         F_dict = Dict{Tuple{Int, Int, Int, Int, Int, Int}, SparseArray{ComplexF64, 4}}()
         for line in eachline(filename)
-            a, b, c, d, α, e, β, μ, f, ν, val = parse_Fsymbol(line)
+            a, b, c, d, e, f, α, β, μ, ν, val = parse_Fsymbol(line)
             if !Base.haskey(F_dict, (a, b, c, d, e, f))
                 F_dict[a, b, c, d, e, f] = generate_Farray(F, a, b, c, d, e, f)
             end
