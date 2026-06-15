@@ -69,25 +69,19 @@ function N_artifact(::Type{F}) where {F <: Union{FR, UFC, PMFC}}
     )
 end
 
-const N_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+)"
+const N_format = r"^(?<a>\d+) (?<b>\d+) (?<c>\d+)$"
 
 function parse_Nsymbol(line)
     m = match(N_format, line)
-    if isnothing(m)
-        m = match(r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<N>\d+)", line) # for old data
+    if !isnothing(m)
+        a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
+        return a, b, c, 1 # manually add multiplicity-free if N not given
     end
 
-    local a, b, c, N
-    try
-        a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
-        if length(m.captures) == 3
-            N = 1 # manually add multiplicity-free if N not given
-        elseif length(m.captures) == 4
-            N = parse(Int, m[:N])
-        end
-    catch
-        throw(Meta.ParseError("invalid N pattern: $m"))
-    end
+    m = match(r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<N>\d+)$", line) # for old data
+    isnothing(m) && throw(Meta.ParseError("invalid N pattern: $line"))
+
+    a, b, c, N = parse.(Int, (m[:a], m[:b], m[:c], m[:N]))
     return a, b, c, N
 end
 
@@ -129,30 +123,22 @@ function F_artifact(::Type{F}) where {F <: Union{UFC, PMFC}}
     )
 end
 
-const F_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<e>\d+) (?<f>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
+const F_format = r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<e>\d+) (?<f>\d+) (?<re>-?\d+\.?\d*) (?<im>-?\d+\.?\d*)$"
 
 function parse_Fsymbol(line)
     m = match(F_format, line)
-    if isnothing(m)
-        m = match(
-            r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<e>\d+) (?<f>\d+) (?<α>\d+) (?<β>\d+) (?<μ>\d+) (?<ν>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)",
-            line
-        ) # for old data
+    if !isnothing(m)
+        a, b, c, d, e, f = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f]))
+        labels = (a, b, c, d, e, f, 1, 1, 1, 1)
+        val = complex(parse.(Float64, (m[:re], m[:im]))...)
+        return labels..., val
     end
 
-    local labels, val
-    try
-        if length(m.captures) == 10
-            a, b, c, d, e, f = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f]))
-            labels = (a, b, c, d, e, f, 1, 1, 1, 1) # manually add multiplicity labels 1 if not given
-            val = complex(parse.(Float64, (m[:re], m[:im]))...)
-        elseif length(m.captures) == 14
-            labels = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f], m[:α], m[:β], m[:μ], m[:ν]))
-            val = complex(parse.(Float64, (m[:re], m[:im]))...)
-        end
-    catch
-        throw(Meta.ParseError("invalid F pattern: $m"))
-    end
+    m = match(r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<e>\d+) (?<f>\d+) (?<α>\d+) (?<β>\d+) (?<μ>\d+) (?<ν>\d+) (?<re>-?\d+\.?\d*) (?<im>-?\d+\.?\d*)$", line)
+    isnothing(m) && throw(Meta.ParseError("invalid F pattern: $line"))
+
+    labels = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f], m[:α], m[:β], m[:μ], m[:ν]))
+    val = complex(parse.(Float64, (m[:re], m[:im]))...)
     return labels..., val
 end
 
@@ -235,27 +221,22 @@ function R_artifact(::Type{F}) where {F <: PMFC}
     )
 end
 
-const R_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
+const R_format = r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<re>-?\d+\.?\d*) (?<im>-?\d+\.?\d*)$"
 
 function parse_Rsymbol(line)
     m = match(R_format, line)
-    if isnothing(m)
-        m = match(r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<μ>\d+) (?<ν>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)", line) # for old data
+    if !isnothing(m)
+        a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
+        labels = (a, b, c, 1, 1) # manually add multiplicity labels 1 if not given
+        val = complex(parse.(Float64, (m[:re], m[:im]))...)
+        return labels..., val
     end
 
-    local labels, val
-    try
-        if length(m.captures) == 7
-            a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
-            labels = (a, b, c, 1, 1) # manually add multiplicity labels 1 if not given
-            val = complex(parse.(Float64, (m[:re], m[:im]))...)
-        elseif length(m.captures) == 9
-            labels = parse.(Int, (m[:a], m[:b], m[:c], m[:μ], m[:ν]))
-            val = complex(parse.(Float64, (m[:re], m[:im]))...)
-        end
-    catch
-        throw(Meta.ParseError("invalid R pattern: $m"))
-    end
+    m = match(r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<μ>\d+) (?<ν>\d+) (?<re>-?\d+\.?\d*) (?<im>-?\d+\.?\d*)$", line) # for old data
+    isnothing(m) && throw(Meta.ParseError("invalid R pattern: $line"))
+
+    labels = parse.(Int, (m[:a], m[:b], m[:c], m[:μ], m[:ν]))
+    val = complex(parse.(Float64, (m[:re], m[:im]))...)
     return labels..., val
 end
 
@@ -324,7 +305,7 @@ end
 # fusiontensors
 # -------------
 
-const fusionformat = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<m1>\d+) (?<m2>\d+) (?<m3>\d+) (?<μ>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
+const fusionformat = r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<m1>\d+) (?<m2>\d+) (?<m3>\d+) (?<μ>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)$"
 
 function fusiontensor_artifact(::Type{F}) where {F <: PMFC}
     return joinpath(
