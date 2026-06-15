@@ -31,7 +31,7 @@
 @objectnames H3 = H3 I α α² ρ αρ α²ρ # calls different Fsymbols to anyonwiki
 
 # Centers
-Base.getindex(::CenterTable, ::Type{VecS3}) = ZVecS3
+Base.getindex(::CenterTable, ::Type{UFC{6, 1, 2, 1, 0}}) = ZVecS3
 @objectnames ZVecS3 = ZVecS3 A B C F G H D E
 
 # Varia
