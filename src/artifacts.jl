@@ -77,12 +77,15 @@ function parse_Nsymbol(line)
         m = match(r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<N>\d+)", line) # for old data
     end
 
-    a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
-    if length(m.captures) == 3
-        N = 1 # manually add multiplicity-free if N not given
-    elseif length(m.captures) == 4
-        N = parse(Int, m[:N])
-    else
+    local a, b, c, N
+    try
+        a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
+        if length(m.captures) == 3
+            N = 1 # manually add multiplicity-free if N not given
+        elseif length(m.captures) == 4
+            N = parse(Int, m[:N])
+        end
+    catch
         throw(Meta.ParseError("invalid N pattern: $m"))
     end
     return a, b, c, N
@@ -137,14 +140,17 @@ function parse_Fsymbol(line)
         ) # for old data
     end
 
-    if length(m.captures) == 10
-        a, b, c, d, e, f = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f]))
-        labels = (a, b, c, d, e, f, 1, 1, 1, 1) # manually add multiplicity labels 1 if not given
-        val = complex(parse.(Float64, (m[:re], m[:im]))...)
-    elseif length(m.captures) == 14
-        labels = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f], m[:α], m[:β], m[:μ], m[:ν]))
-        val = complex(parse.(Float64, (m[:re], m[:im]))...)
-    else
+    local labels, val
+    try
+        if length(m.captures) == 10
+            a, b, c, d, e, f = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f]))
+            labels = (a, b, c, d, e, f, 1, 1, 1, 1) # manually add multiplicity labels 1 if not given
+            val = complex(parse.(Float64, (m[:re], m[:im]))...)
+        elseif length(m.captures) == 14
+            labels = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f], m[:α], m[:β], m[:μ], m[:ν]))
+            val = complex(parse.(Float64, (m[:re], m[:im]))...)
+        end
+    catch
         throw(Meta.ParseError("invalid F pattern: $m"))
     end
     return labels..., val
@@ -237,14 +243,17 @@ function parse_Rsymbol(line)
         m = match(r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<μ>\d+) (?<ν>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)", line) # for old data
     end
 
-    if length(m.captures) == 7
-        a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
-        labels = (a, b, c, 1, 1) # manually add multiplicity labels 1 if not given
-        val = complex(parse.(Float64, (m[:re], m[:im]))...)
-    elseif length(m.captures) == 9
-        labels = parse.(Int, (m[:a], m[:b], m[:c], m[:μ], m[:ν]))
-        val = complex(parse.(Float64, (m[:re], m[:im]))...)
-    else
+    local labels, val
+    try
+        if length(m.captures) == 7
+            a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
+            labels = (a, b, c, 1, 1) # manually add multiplicity labels 1 if not given
+            val = complex(parse.(Float64, (m[:re], m[:im]))...)
+        elseif length(m.captures) == 9
+            labels = parse.(Int, (m[:a], m[:b], m[:c], m[:μ], m[:ν]))
+            val = complex(parse.(Float64, (m[:re], m[:im]))...)
+        end
+    catch
         throw(Meta.ParseError("invalid R pattern: $m"))
     end
     return labels..., val
