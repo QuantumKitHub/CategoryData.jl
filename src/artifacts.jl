@@ -69,12 +69,12 @@ function N_artifact(::Type{F}) where {F <: Union{FR, UFC, PMFC}}
     )
 end
 
-const N_format = r"(?<a>\d+)\t(?<b>\d+)\t(?<c>\d+)"
+const N_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+)"
 
 function parse_Nsymbol(line)
     m = match(N_format, line)
     if isnothing(m)
-        m = match(r"(?<a>\d+)\t(?<b>\d+)\t(?<c>\d+)\t(?<N>\d+)", line) # for old data
+        m = match(r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<N>\d+)", line) # for old data
     end
 
     a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
@@ -126,14 +126,14 @@ function F_artifact(::Type{F}) where {F <: Union{UFC, PMFC}}
     )
 end
 
-const F_format = r"(?<a>\d+)\t(?<b>\d+)\t(?<c>\d+)\t(?<d>\d+)\t(?<e>\d+)\t(?<f>\d+)\t(?<re>-?\d+(\.\d+)?)\t(?<im>-?\d+(\.\d+)?)"
+const F_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<e>\d+) (?<f>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
 
 #TODO for old data: permute columns so multiplicities come after labels
 function parse_Fsymbol(line)
     m = match(F_format, line)
     if isnothing(m)
         m = match(
-            r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<α>\d+) (?<e>\d+) (?<β>\d+) (?<μ>\d+) (?<f>\d+) (?<ν>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)",
+            r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<e>\d+) (?<f>\d+) (?<α>\d+) (?<β>\d+) (?<μ>\d+) (?<ν>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)",
             line
         ) # for old data
     end
@@ -143,10 +143,7 @@ function parse_Fsymbol(line)
         labels = (a, b, c, d, e, f, 1, 1, 1, 1) # manually add multiplicity labels 1 if not given
         val = complex(parse.(Float64, (m[:re], m[:im]))...)
     elseif length(m.captures) == 14
-        a, b, c, d, α, e, β, μ, f, ν = parse.(
-            Int, (m[:a], m[:b], m[:c], m[:d], m[:α], m[:e], m[:β], m[:μ], m[:f], m[:ν])
-        )
-        labels = (a, b, c, d, e, f, α, β, μ, ν)
+        labels = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f], m[:α], m[:β], m[:μ], m[:ν]))
         val = complex(parse.(Float64, (m[:re], m[:im]))...)
     else
         throw(Meta.ParseError("invalid F pattern: $m"))
@@ -233,7 +230,7 @@ function R_artifact(::Type{F}) where {F <: PMFC}
     )
 end
 
-const R_format = r"(?<a>\d+)\t(?<b>\d+)\t(?<c>\d+)\t(?<re>-?\d+(\.\d+)?)\t(?<im>-?\d+(\.\d+)?)"
+const R_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
 
 function parse_Rsymbol(line)
     m = match(R_format, line)
