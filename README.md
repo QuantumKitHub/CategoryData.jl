@@ -11,7 +11,7 @@
 [![Coverage](https://codecov.io/gh/lkdvos/CategoryData.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/lkdvos/CategoryData.jl)
 
 This package currently provides [TensorKit.jl](https://github.com/Jutho/TensorKit.jl)'s sectortypes for all objects of multiplicity-free (braided)
- fusion categories up to rank 6. The full list can be found [here](https://anyonwiki.github.io/pages/Lists/losmffc.html), along with the naming convention [here](https://anyonwiki.github.io/pages/Concepts/FormalFusionRingNames.html).
+ fusion categories up to rank 7. The full list can be found [here](https://anyonwiki.github.io/pages/Lists/losmffc.html), along with the naming convention [here](https://anyonwiki.github.io/pages/Concepts/FormalFusionRingNames.html).
 
 Additionally, some specific categories with multiplicities have also been added.
 
