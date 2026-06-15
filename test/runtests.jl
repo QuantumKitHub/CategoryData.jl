@@ -1,12 +1,14 @@
 using CategoryData
 using Test, TestExtras, Random
 using TensorKitSectors
-using TensorKitSectors: fusiontensor, triangle_equation, pentagon_equation, hexagon_equation
+using TensorKitSectors: fusiontensor, triangle_equation, pentagon_equation, hexagon_equation, topological_central_charge, topological_spin, dim, Smatrix, Tmatrix, ismodular
 using Base.Iterators: product
 using LinearAlgebra: LinearAlgebra
 using TensorOperations: @tensor
 
 Random.seed!(1234)
+
+include("aliases.jl")
 
 smallset(::Type{I}) where {I <: Object} = values(I)
 function randsector(::Type{I}) where {I <: Object}
