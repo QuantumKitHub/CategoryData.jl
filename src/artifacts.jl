@@ -128,7 +128,6 @@ end
 
 const F_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<e>\d+) (?<f>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
 
-#TODO for old data: permute columns so multiplicities come after labels
 function parse_Fsymbol(line)
     m = match(F_format, line)
     if isnothing(m)
