@@ -42,15 +42,15 @@ F_artifact(::Type{H1}) = joinpath(artifact_path, "Fsymbols", "H1.txt")
 
 struct H2 <: FusionCategory end
 rank(::Type{H2}) = 6
-multiplicity(::Type{H2}) = 2
-selfduality(::Type{H2}) = 0
+multiplicity(::Type{H2}) = 1
+selfduality(::Type{H2}) = 2
 N_artifact(::Type{H2}) = joinpath(artifact_path, "Nsymbols", "FR_6_1_2_8.txt")
 F_artifact(::Type{H2}) = joinpath(artifact_path, "Fsymbols", "H2.txt")
 
 struct H3 <: FusionCategory end
 rank(::Type{H3}) = 6
-multiplicity(::Type{H3}) = 2
-selfduality(::Type{H3}) = 0
+multiplicity(::Type{H3}) = 1
+selfduality(::Type{H3}) = 2
 N_artifact(::Type{H3}) = joinpath(artifact_path, "Nsymbols", "FR_6_1_2_8.txt")
 F_artifact(::Type{H3}) = joinpath(artifact_path, "Fsymbols", "H3.txt")
 
