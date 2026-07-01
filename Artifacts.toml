@@ -1,6 +1,6 @@
 [fusiondata]
-git-tree-sha1 = "aca13f38b891ad1a149fb74e474bfd6836e1c803"
+git-tree-sha1 = "c0db6062589974bb7209be044ae604e3ca5b2642"
 
     [[fusiondata.download]]
-    sha256 = "d0e04249578b564fe8622cb173d7bd8052b8b75bb8c345894bfde46ff399ad47"
+    sha256 = "9f543208a51821e6c156ae33c8bd89cec59b63d440f467a0c2ea3833a43519b6"
     url = "https://github.com/QuantumKitHub/CategoryData.jl/archive/refs/tags/data-temp.tar.gz"
