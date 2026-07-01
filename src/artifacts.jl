@@ -1,4 +1,4 @@
-const artifact_path = joinpath(artifact"fusiondata", "CategoryData.jl-data-v0.1.3", "data")
+const artifact_path = joinpath(artifact"fusiondata", "CategoryData.jl-data-temp", "data")
 
 function list_fusionrings()
     foldername = joinpath(artifact_path, "Nsymbols")
@@ -19,14 +19,16 @@ function list_fusionrings()
     return rings
 end
 
-function list_fusioncategories()
+function list_fusioncategories() # strictly fusion categories, not braided
     foldername = joinpath(artifact_path, "Fsymbols")
     categories = Vector{Type{<:FusionCategory}}()
     for file in readdir(foldername)
-        m = match(r"FR_(?<R>\d+)_(?<M>\d+)_(?<N>\d+)_(?<I>\d+)_(?<D>\d+).txt", file)
+        m = match(r"FR_(?<R>\d+)_(?<M>\d+)_(?<N>\d+)_(?<I>\d+)_(?<D1>\d+)_(?<D2>\d+).txt", file)
         if !isnothing(m)
-            R, M, N, I, D = parse.(Int, (m[:R], m[:M], m[:N], m[:I], m[:D]))
-            push!(categories, UFC{R, M, N, I, D})
+            R, M, N, I, D₁, D₂ = parse.(Int, (m[:R], m[:M], m[:N], m[:I], m[:D1], m[:D2]))
+            if iszero(D₂) # _0 means it's unbraided, so it's a UFC
+                push!(categories, UFC{R, M, N, I, D₁})
+            end
         else
             try
                 push!(categories, eval(Meta.parse(splitext(file)[1])))
@@ -69,17 +71,19 @@ function N_artifact(::Type{F}) where {F <: Union{FR, UFC, PMFC}}
     )
 end
 
-const N_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<N>\d+)"
+const N_format = r"^(?<a>\d+) (?<b>\d+) (?<c>\d+)$"
 
 function parse_Nsymbol(line)
     m = match(N_format, line)
-    local a, b, c, N
-    try
+    if !isnothing(m)
         a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
-        N = parse(Int, m[:N])
-    catch
-        throw(Meta.ParseError("invalid N pattern: $m"))
+        return a, b, c, 1 # manually add multiplicity-free if N not given
     end
+
+    m = match(r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<N>\d+)$", line) # for old data
+    isnothing(m) && throw(Meta.ParseError("invalid N pattern: $line"))
+
+    a, b, c, N = parse.(Int, (m[:a], m[:b], m[:c], m[:N]))
     return a, b, c, N
 end
 
@@ -114,26 +118,39 @@ end
 # Fsymbols
 # --------
 
-function F_artifact(::Type{F}) where {F <: Union{UFC, PMFC}}
+# unbraided fusion categories are still stored with braid index 0
+function F_artifact(::Type{F}) where {F <: UFC}
     return joinpath(
         artifact_path, "Fsymbols",
-        "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F)).txt"
+        "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F))_0.txt"
     )
 end
 
-const F_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<α>\d+) (?<e>\d+) (?<β>\d+) (?<μ>\d+) (?<f>\d+) (?<ν>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
+# distinct braided categories sharing the same pentagon index can have distinct Fsymbols,
+# so both the pentagon and braid index are needed in the filename
+function F_artifact(::Type{F}) where {F <: PMFC}
+    return joinpath(
+        artifact_path, "Fsymbols",
+        "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F))_$(braid_index(F)).txt"
+    )
+end
+
+const F_format = r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<e>\d+) (?<f>\d+) (?<re>-?\d+\.?\d*) (?<im>-?\d+\.?\d*)$"
 
 function parse_Fsymbol(line)
     m = match(F_format, line)
-    local labels, val
-    try
-        labels = parse.(
-            Int, (m[:a], m[:b], m[:c], m[:d], m[:α], m[:e], m[:β], m[:μ], m[:f], m[:ν])
-        )
+    if !isnothing(m)
+        a, b, c, d, e, f = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f]))
+        labels = (a, b, c, d, e, f, 1, 1, 1, 1)
         val = complex(parse.(Float64, (m[:re], m[:im]))...)
-    catch
-        throw(Meta.ParseError("invalid F pattern: $m"))
+        return labels..., val
     end
+
+    m = match(r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<d>\d+) (?<e>\d+) (?<f>\d+) (?<α>\d+) (?<β>\d+) (?<μ>\d+) (?<ν>\d+) (?<re>-?\d+\.?\d*) (?<im>-?\d+\.?\d*)$", line)
+    isnothing(m) && throw(Meta.ParseError("invalid F pattern: $line"))
+
+    labels = parse.(Int, (m[:a], m[:b], m[:c], m[:d], m[:e], m[:f], m[:α], m[:β], m[:μ], m[:ν]))
+    val = complex(parse.(Float64, (m[:re], m[:im]))...)
     return labels..., val
 end
 
@@ -146,7 +163,7 @@ function extract_Fsymbol(::Type{F}) where {F <: FusionCategory}
     if M == 1
         F_array = SparseArray{ComplexF64}(undef, (R, R, R, R, R, R))
         for line in eachline(filename)
-            a, b, c, d, α, e, β, μ, f, ν, val = parse_Fsymbol(line)
+            a, b, c, d, e, f, α, β, μ, ν, val = parse_Fsymbol(line)
             μ == ν == α == β == 1 || throw(DomainError("not multiplicity-free"))
             F_array[a, b, c, d, e, f] = val
         end
@@ -154,7 +171,7 @@ function extract_Fsymbol(::Type{F}) where {F <: FusionCategory}
     else
         F_dict = Dict{Tuple{Int, Int, Int, Int, Int, Int}, SparseArray{ComplexF64, 4}}()
         for line in eachline(filename)
-            a, b, c, d, α, e, β, μ, f, ν, val = parse_Fsymbol(line)
+            a, b, c, d, e, f, α, β, μ, ν, val = parse_Fsymbol(line)
             if !Base.haskey(F_dict, (a, b, c, d, e, f))
                 F_dict[a, b, c, d, e, f] = generate_Farray(F, a, b, c, d, e, f)
             end
@@ -263,17 +280,22 @@ function R_artifact(::Type{F}) where {F <: PMFC}
     )
 end
 
-const R_format = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<μ>\d+) (?<ν>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
+const R_format = r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<re>-?\d+\.?\d*) (?<im>-?\d+\.?\d*)$"
 
 function parse_Rsymbol(line)
     m = match(R_format, line)
-    local labels, val
-    try
-        labels = parse.(Int, (m[:a], m[:b], m[:c], m[:μ], m[:ν]))
+    if !isnothing(m)
+        a, b, c = parse.(Int, (m[:a], m[:b], m[:c]))
+        labels = (a, b, c, 1, 1) # manually add multiplicity labels 1 if not given
         val = complex(parse.(Float64, (m[:re], m[:im]))...)
-    catch
-        throw(Meta.ParseError("invalid R pattern: $m"))
+        return labels..., val
     end
+
+    m = match(r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<μ>\d+) (?<ν>\d+) (?<re>-?\d+\.?\d*) (?<im>-?\d+\.?\d*)$", line) # for old data
+    isnothing(m) && throw(Meta.ParseError("invalid R pattern: $line"))
+
+    labels = parse.(Int, (m[:a], m[:b], m[:c], m[:μ], m[:ν]))
+    val = complex(parse.(Float64, (m[:re], m[:im]))...)
     return labels..., val
 end
 
@@ -356,7 +378,7 @@ end
 # fusiontensors
 # -------------
 
-const fusionformat = r"(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<m1>\d+) (?<m2>\d+) (?<m3>\d+) (?<μ>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)"
+const fusionformat = r"^(?<a>\d+) (?<b>\d+) (?<c>\d+) (?<m1>\d+) (?<m2>\d+) (?<m3>\d+) (?<μ>\d+) (?<re>-?\d+(\.\d+)?) (?<im>-?\d+(\.\d+)?)$"
 
 function fusiontensor_artifact(::Type{F}) where {F <: PMFC}
     return joinpath(
