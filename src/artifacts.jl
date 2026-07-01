@@ -19,14 +19,16 @@ function list_fusionrings()
     return rings
 end
 
-function list_fusioncategories()
+function list_fusioncategories() # strictly fusion categories, not braided
     foldername = joinpath(artifact_path, "Fsymbols")
     categories = Vector{Type{<:FusionCategory}}()
     for file in readdir(foldername)
-        m = match(r"FR_(?<R>\d+)_(?<M>\d+)_(?<N>\d+)_(?<I>\d+)_(?<D>\d+).txt", file)
+        m = match(r"FR_(?<R>\d+)_(?<M>\d+)_(?<N>\d+)_(?<I>\d+)_(?<D1>\d+)_(?<D2>\d+).txt", file)
         if !isnothing(m)
-            R, M, N, I, D = parse.(Int, (m[:R], m[:M], m[:N], m[:I], m[:D]))
-            push!(categories, UFC{R, M, N, I, D})
+            R, M, N, I, D₁, D₂ = parse.(Int, (m[:R], m[:M], m[:N], m[:I], m[:D1], m[:D2]))
+            if iszero(D₂) # _0 means it's unbraided, so it's a UFC
+                push!(categories, UFC{R, M, N, I, D₁})
+            end
         else
             try
                 push!(categories, eval(Meta.parse(splitext(file)[1])))
@@ -116,10 +118,20 @@ end
 # Fsymbols
 # --------
 
-function F_artifact(::Type{F}) where {F <: Union{UFC, PMFC}}
+# unbraided fusion categories are still stored with braid index 0
+function F_artifact(::Type{F}) where {F <: UFC}
     return joinpath(
         artifact_path, "Fsymbols",
-        "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F)).txt"
+        "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F))_0.txt"
+    )
+end
+
+# distinct braided categories sharing the same pentagon index can have distinct Fsymbols,
+# so both the pentagon and braid index are needed in the filename
+function F_artifact(::Type{F}) where {F <: PMFC}
+    return joinpath(
+        artifact_path, "Fsymbols",
+        "FR_$(rank(F))_$(multiplicity(F))_$(selfduality(F))_$(ring_index(F))_$(category_index(F))_$(braid_index(F)).txt"
     )
 end
 
