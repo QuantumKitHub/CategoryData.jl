@@ -14,7 +14,7 @@ Base.isless(a::Object{F}, b::Object{F}) where {F} = isless(a.id, b.id)
 Base.hash(a::Object{F}, h::UInt) where {F} = hash(a.id, h)
 Base.convert(::Type{F}, d::Integer) where {F <: Object} = F(d)
 
-Base.IteratorSize(::Type{SectorValues{<:Object}}) = HasLength()
+Base.IteratorSize(::Type{SectorValues{<:Object}}) = Base.HasLength()
 Base.length(::SectorValues{<:Object{F}}) where {F} = rank(F)
 function Base.iterate(::SectorValues{<:Object{F}}, i = 1) where {F}
     return i > rank(F) ? nothing : (Object{F}(i), i + 1)
@@ -41,9 +41,9 @@ function TensorKitSectors.dual(a::Object{F}) where {F}
     if selfduality(F) == 0
         return a
     else
-        return Object{F}(
-            findfirst(x -> Nsymbol(a, x, unit(a)) == 1, collect(values(typeof(a))))
-        )
+        id = findfirst(x -> Nsymbol(a, x, unit(a)) == 1, collect(values(typeof(a))))
+        isnothing(id) && throw(ArgumentError("no dual found for $a"))
+        return Object{F}(id)
     end
 end
 
