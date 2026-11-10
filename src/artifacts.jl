@@ -394,13 +394,10 @@ end
 
 function parse_fusiontensor(line)
     m = match(fusiontensor_format, line)
-    local labels, val
-    try
-        labels = parse.(Int, (m[:a], m[:b], m[:c], m[:m1], m[:m2], m[:m3], m[:μ]))
-        val = complex(parse.(Float64, (m[:re], m[:im]))...)
-    catch
-        throw(Meta.ParseError("invalid fusiontensor pattern: $line"))
-    end
+    isnothing(m) && throw(Meta.ParseError("invalid fusiontensor pattern: $line"))
+
+    labels = parse.(Int, (m[:a], m[:b], m[:c], m[:m1], m[:m2], m[:m3], m[:μ]))
+    val = complex(parse.(Float64, (m[:re], m[:im]))...)
     return labels..., val
 end
 

@@ -35,6 +35,10 @@ jobs:
       - uses: julia-actions/cache@v3
       - uses: julia-actions/julia-buildpkg@latest
       - uses: julia-actions/julia-runtest@latest
+        with:
+          # test-only deps such as JET drop old Julia versions in newer releases,
+          # so the latest compatible versions are not always installable on `min`
+          force_latest_compatible_version: ${{ matrix.version == 'min' && 'false' || 'auto' }}
         env:
           JULIA_NUM_THREADS: 4
       - uses: julia-actions/julia-processcoverage@v1
